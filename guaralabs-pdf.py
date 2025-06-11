@@ -163,7 +163,7 @@ def select_files(title="Selecione os arquivos PDF"):
     """Abre uma caixa de diálogo para selecionar múltiplos arquivos PDF."""
     file_paths = filedialog.askopenfilenames(title=title, filetypes=[("PDF files", "*.pdf")])
     if not file_paths: return None
-    
+
     valid_files = []
     invalid_files_basenames = []
     for fp in file_paths:
@@ -171,12 +171,12 @@ def select_files(title="Selecione os arquivos PDF"):
             valid_files.append(fp)
         else:
             invalid_files_basenames.append(os.path.basename(fp))
-    
+
     if invalid_files_basenames:
         messagebox.showwarning("Arquivos Inválidos",
                                f"Os seguintes arquivos foram ignorados (corrompidos ou inválidos):\n" +
                                f"\n - {', '.join(invalid_files_basenames)}")
-    
+
     logging.debug(f"Arquivos selecionados válidos: {len(valid_files)}, inválidos: {len(invalid_files_basenames)}")
     return valid_files if valid_files else None
 
@@ -216,11 +216,11 @@ def parse_page_range(page_range_str, total_pages):
         if '-' in part:
             try:
                 start_end_parts = part.split('-')
-                if len(start_end_parts) == 2: 
+                if len(start_end_parts) == 2:
                     start, end = map(int, start_end_parts)
                     if 1 <= start <= end <= total_pages:
                         indices.update(range(start - 1, end))
-                else: 
+                else:
                     logging.warning(f"Intervalo malformado '{part}' em '{page_range_str}'")
             except ValueError:
                 logging.warning(f"Intervalo inválido (não numérico) '{part}' em '{page_range_str}'")
@@ -247,7 +247,7 @@ def create_tooltip(widget, text):
     """Cria tooltips customizados para os widgets."""
     tooltip_active = False
     tooltip_window = None
-    
+
     def enter(event):
         nonlocal tooltip_active, tooltip_window
         if tooltip_active: return
@@ -282,7 +282,7 @@ def create_tooltip(widget, text):
             except tk.TclError: pass # Ignora erro se a janela já foi destruída
             tooltip_active = False
             tooltip_window = None
-            
+
     def leave(event):
         fade_out(False)
 
@@ -305,11 +305,11 @@ def get_description_for_function(function_key):
         "pdf_jpg": "tooltip_pdf_jpg"
     }
     desc_key = desc_key_map.get(function_key)
-    
+
     # Tenta buscar a descrição mapeada
     if desc_key and desc_key in texts:
         return texts[desc_key]
-    
+
     # Fallback: tenta buscar no help_text se não houver mapeamento direto
     help_content = texts.get("help_text", "")
     lines = help_content.split('\n')
@@ -336,14 +336,14 @@ def render_pdf_page_to_image(page_obj, max_width=MAX_PREVIEW_IMG_WIDTH_SINGLE):
         matrix = fitz.Matrix(PREVIEW_RESOLUTION_FACTOR, PREVIEW_RESOLUTION_FACTOR)
         pix = page_obj.get_pixmap(matrix=matrix, alpha=False)
         img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-        
+
         if pix.width == 0: return None # Evitar divisão por zero
-        
+
         # Redimensiona para a largura máxima desejada, mantendo a proporção
         ratio = max_width / pix.width
         new_height = int(pix.height * ratio)
         img_resized = img.resize((max_width, new_height), Image.Resampling.LANCZOS)
-        
+
         photo = ImageTk.PhotoImage(img_resized)
         preview_images.append(photo) # Manter referência para evitar garbage collection
         return photo
@@ -361,18 +361,18 @@ def create_interactive_preview_window_base(title_key, num_pdf_panels=1):
     geo_width = 900 if num_pdf_panels == 1 else 1200 # Ajusta largura da janela
     preview_window.geometry(f"{geo_width}x700")
     preview_window.minsize(700 if num_pdf_panels==1 else 1000, 600)
-    
+
     # Fundo da janela de prévia: Noite Estrelada
-    preview_window.configure(bg=COLOR_NIGHT_SKY) 
+    preview_window.configure(bg=COLOR_NIGHT_SKY)
 
     # Frames para organização da janela (todos com fundo Noite Estrelada)
-    top_input_frame = ttkb.Frame(preview_window, padding=(10, 10), style='PreviewDark.TFrame') 
+    top_input_frame = ttkb.Frame(preview_window, padding=(10, 10), style='PreviewDark.TFrame')
     top_input_frame.pack(side="top", fill="x", padx=5, pady=5)
 
-    main_preview_area_frame = ttkb.Frame(preview_window, style='PreviewDark.TFrame') 
+    main_preview_area_frame = ttkb.Frame(preview_window, style='PreviewDark.TFrame')
     main_preview_area_frame.pack(side="top", fill="both", expand=True, padx=5, pady=(0,5))
 
-    bottom_action_frame = ttkb.Frame(preview_window, padding=(10,10), style='PreviewDark.TFrame') 
+    bottom_action_frame = ttkb.Frame(preview_window, padding=(10,10), style='PreviewDark.TFrame')
     bottom_action_frame.pack(side="bottom", fill="x", padx=5, pady=5)
 
     return preview_window, top_input_frame, main_preview_area_frame, bottom_action_frame
@@ -392,10 +392,10 @@ def setup_scrollable_canvas_in_frame(parent_frame, label_text="Prévia PDF"):
     # Scrollbar: Terracota do Cerrado para a cor do polegar
     scrollbar = ttkb.Scrollbar(canvas_container, orient="vertical", command=canvas.yview, bootstyle="round-info")
     # Configura o estilo da scrollbar diretamente
-    style.configure("round-info", troughcolor=COLOR_NIGHT_SKY, background=COLOR_TERRACOTTA) 
-    
+    style.configure("round-info", troughcolor=COLOR_NIGHT_SKY, background=COLOR_TERRACOTTA)
+
     # Frame interno do canvas com fundo Luz Pura da Lua
-    scrollable_content_frame = ttkb.Frame(canvas, background=COLOR_MOON_LIGHT) 
+    scrollable_content_frame = ttkb.Frame(canvas, background=COLOR_MOON_LIGHT)
 
     # Configura o scrollregion do canvas quando o conteúdo é redimensionado
     scrollable_content_frame.bind("<Configure>", lambda e, c=canvas: c.configure(scrollregion=c.bbox("all")))
@@ -407,28 +407,28 @@ def setup_scrollable_canvas_in_frame(parent_frame, label_text="Prévia PDF"):
 
     # Adiciona suporte para rolagem com a roda do mouse
     def _on_mousewheel(event, c=canvas):
-        if not c.winfo_exists(): 
+        if not c.winfo_exists():
             return
         delta = 0
-        if event.num == 4: 
-            delta = -1 
-        elif event.num == 5: 
-            delta = 1 
-        else: 
+        if event.num == 4:
+            delta = -1
+        elif event.num == 5:
+            delta = 1
+        else:
             delta = -1 if event.delta > 0 else 1
-            if abs(event.delta) < 100 and abs(event.delta) > 2: 
+            if abs(event.delta) < 100 and abs(event.delta) > 2:
                 delta = int(event.delta /10) if abs(event.delta)>5 else event.delta
-            elif abs(event.delta) <=2: 
+            elif abs(event.delta) <=2:
                 delta = 0
         if delta != 0:
             c.yview_scroll(delta , "units")
 
     # Bind da roda do mouse para Windows/macOS e Linux
-    for widget_to_bind in [canvas, scrollable_content_frame]: 
-        widget_to_bind.bind("<MouseWheel>", lambda e, c_arg=canvas: _on_mousewheel(e, c_arg), add="+") 
+    for widget_to_bind in [canvas, scrollable_content_frame]:
+        widget_to_bind.bind("<MouseWheel>", lambda e, c_arg=canvas: _on_mousewheel(e, c_arg), add="+")
         widget_to_bind.bind("<Button-4>", lambda e, c_arg=canvas: _on_mousewheel(type('event', (object,), {'num': 4, 'delta': 0}), c_arg), add="+")
         widget_to_bind.bind("<Button-5>", lambda e, c_arg=canvas: _on_mousewheel(type('event', (object,), {'num': 5, 'delta': 0}), c_arg), add="+")
-        
+
     return canvas, scrollable_content_frame
 
 # --- Funções de Prévia Interativa Específicas ---
@@ -443,13 +443,13 @@ def open_interactive_preview_single_pdf(file_path, title_key, entry_prompt_key, 
     # Labels com fundo Noite Estrelada e texto Luz Pura da Lua
     input_main_label = ttkb.Label(top_input_frame, text=texts[entry_prompt_key], background=COLOR_NIGHT_SKY, foreground=COLOR_MOON_LIGHT, font=("Verdana", 10))
     input_main_label.pack(side="left", padx=(0,5), pady=5, anchor="w")
-    
+
     # Entry com fundo Luz Pura da Lua e texto Noite Estrelada
     page_range_entry = ttkb.Entry(top_input_frame, width=25, font=("Verdana", 10), fieldbackground=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY, bordercolor=COLOR_TERRACOTTA)
     page_range_entry.pack(side="left", padx=5, pady=5, anchor="w")
-    
+
     # Descrição com fundo Noite Estrelada e texto Terracota
-    description_text = get_description_for_function(entry_desc_key) 
+    description_text = get_description_for_function(entry_desc_key)
     description_label = ttkb.Label(top_input_frame, text=description_text, background=COLOR_NIGHT_SKY, foreground=COLOR_TERRACOTTA, wraplength=350, justify="left", font=("Verdana", 8))
     description_label.pack(side="left", padx=5, pady=5, fill="x", expand=True, anchor="w")
 
@@ -457,17 +457,17 @@ def open_interactive_preview_single_pdf(file_path, title_key, entry_prompt_key, 
     canvas, scroll_content = setup_scrollable_canvas_in_frame(main_preview_area_frame, texts["preview_info_original_pdf"].format(filename=os.path.basename(file_path)))
 
     # Usar um dicionário para a referência do documento PDF para que possa ser atualizado em funções aninhadas
-    pdf_doc_ref = {'doc': None, 'total_pages': 0} 
+    pdf_doc_ref = {'doc': None, 'total_pages': 0}
     try:
         temp_doc = fitz.open(file_path)
         pdf_doc_ref['total_pages'] = temp_doc.page_count
-        temp_doc.close() 
-    except Exception as e: 
+        temp_doc.close()
+    except Exception as e:
         logging.error(f"Erro crítico ao abrir PDF {file_path} inicialmente para prévia: {e}")
         messagebox.showerror(texts["error"], f"Não foi possível abrir o PDF: {os.path.basename(file_path)}\nVerifique se o arquivo não está corrompido.")
         preview_window.destroy()
         return
-    
+
     if pdf_doc_ref['total_pages'] == 0:
         messagebox.showerror(texts["error"], f"O PDF {os.path.basename(file_path)} não contém páginas.")
         preview_window.destroy()
@@ -475,67 +475,67 @@ def open_interactive_preview_single_pdf(file_path, title_key, entry_prompt_key, 
 
     def _update_preview_display(event=None):
         global preview_images
-        preview_images = [] 
-        for widget in scroll_content.winfo_children(): 
+        preview_images = []
+        for widget in scroll_content.winfo_children():
             widget.destroy()
 
         range_str = page_range_entry.get()
-        
+
         # Reabre o documento se ele estiver fechado (para garantir acesso consistente)
         if not pdf_doc_ref['doc'] or pdf_doc_ref['doc'].is_closed:
             try:
                 pdf_doc_ref['doc'] = fitz.open(file_path)
-                pdf_doc_ref['total_pages'] = pdf_doc_ref['doc'].page_count 
+                pdf_doc_ref['total_pages'] = pdf_doc_ref['doc'].page_count
             except Exception as e:
                 logging.error(f"Erro ao reabrir PDF {file_path} para prévia: {e}")
-                ttkb.Label(scroll_content, text="Erro ao carregar PDF para prévia.", background=COLOR_MOON_LIGHT, foreground="red").pack(pady=5) 
+                ttkb.Label(scroll_content, text="Erro ao carregar PDF para prévia.", background=COLOR_MOON_LIGHT, foreground="red").pack(pady=5)
                 return
-        
+
         pdf_doc = pdf_doc_ref['doc']
         total_pages = pdf_doc_ref['total_pages']
 
         if not validate_range(range_str, total_pages, allow_comma=True):
-            ttkb.Label(scroll_content, text=texts["invalid_range"].format(total=total_pages), background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5) 
-            canvas.yview_moveto(0) 
-            scroll_content.update_idletasks() 
-            canvas.config(scrollregion=canvas.bbox("all")) 
+            ttkb.Label(scroll_content, text=texts["invalid_range"].format(total=total_pages), background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
+            canvas.yview_moveto(0)
+            scroll_content.update_idletasks()
+            canvas.config(scrollregion=canvas.bbox("all"))
             return
 
         indices_to_display = parse_page_range(range_str, total_pages)
-        
+
         # Texto descritivo para a operação
         operation_type_text_map = {
             "preview_title_exclude": texts.get("interactive_page_range_description_exclude_label", "Páginas a serem EXCLUÍDAS:"),
             "preview_title_select": texts.get("interactive_page_range_description_select_label", "Páginas a serem SELECIONADAS:")
         }
         operation_type_text = operation_type_text_map.get(title_key, "Páginas Afetadas:")
-        
+
         if operation_type_text:
-            ttkb.Label(scroll_content, text=operation_type_text, background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(5,0), anchor="w", padx=5) 
+            ttkb.Label(scroll_content, text=operation_type_text, background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(5,0), anchor="w", padx=5)
 
         if not indices_to_display:
-             ttkb.Label(scroll_content, text="Nenhuma página corresponde ao intervalo digitado.", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5) 
-        
+             ttkb.Label(scroll_content, text="Nenhuma página corresponde ao intervalo digitado.", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
+
         # Exibe as imagens de prévia
         for i in indices_to_display[:MAX_PREVIEW_IMAGES_SHOWN]:
-            if 0 <= i < total_pages: 
+            if 0 <= i < total_pages:
                 try:
                     page = pdf_doc.load_page(i)
                     photo = render_pdf_page_to_image(page, max_width=MAX_PREVIEW_IMG_WIDTH_SINGLE)
                     if photo:
                         ttkb.Label(scroll_content, image=photo, background=COLOR_MOON_LIGHT).pack(pady=10, padx=10)
                         ttkb.Label(scroll_content, text=texts["preview_page_label"].format(num=i + 1), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(0, 10))
-                except Exception as render_err: 
+                except Exception as render_err:
                     logging.error(f"Erro ao renderizar página {i+1} para prévia (single_pdf): {render_err}")
                     ttkb.Label(scroll_content, text=f"Erro ao renderizar pág. {i+1}", background=COLOR_MOON_LIGHT, foreground="red").pack(pady=5)
 
         if len(indices_to_display) > MAX_PREVIEW_IMAGES_SHOWN:
-             ttkb.Label(scroll_content, text=f"... e mais {len(indices_to_display) - MAX_PREVIEW_IMAGES_SHOWN} página(s) (não exibidas).", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5) 
-        
-        canvas.yview_moveto(0) 
-        scroll_content.update_idletasks() 
-        canvas.config(scrollregion=canvas.bbox("all")) 
-        
+             ttkb.Label(scroll_content, text=f"... e mais {len(indices_to_display) - MAX_PREVIEW_IMAGES_SHOWN} página(s) (não exibidas).", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
+
+        canvas.yview_moveto(0)
+        scroll_content.update_idletasks()
+        canvas.config(scrollregion=canvas.bbox("all"))
+
     def on_confirm_action():
         """Função chamada ao confirmar a operação na janela de prévia."""
         current_total_pages = 0
@@ -547,15 +547,15 @@ def open_interactive_preview_single_pdf(file_path, title_key, entry_prompt_key, 
             except Exception as e_confirm:
                 logging.error(f"Erro ao abrir PDF {file_path} na confirmação: {e_confirm}")
                 messagebox.showerror(texts["error"], "Erro ao acessar o PDF para confirmar a operação.")
-                preview_window.destroy() 
+                preview_window.destroy()
                 return
-        else: 
+        else:
             current_total_pages = pdf_doc_ref['doc'].page_count
-            pdf_doc_ref['doc'].close() 
+            pdf_doc_ref['doc'].close()
             pdf_doc_ref['doc'] = None
 
         action_callback(file_path, page_range_entry.get(), current_total_pages)
-        preview_window.destroy() 
+        preview_window.destroy()
 
     def on_close_preview_window():
         """Fecha o documento PDF aberto na prévia ao fechar a janela."""
@@ -567,16 +567,16 @@ def open_interactive_preview_single_pdf(file_path, title_key, entry_prompt_key, 
     # Binds para atualizar a prévia
     page_range_entry.bind("<FocusOut>", _update_preview_display)
     page_range_entry.bind("<Return>", _update_preview_display)
-    
+
     # Botões de ação
     confirm_btn = ttkb.Button(bottom_action_frame, text=texts["preview_confirm"], background=COLOR_TERRACOTTA, foreground=COLOR_NIGHT_SKY, font=("Verdana", 10, "bold"))
     confirm_btn.pack(side="left", padx=10, pady=5, fill="x", expand=True)
     cancel_btn = ttkb.Button(bottom_action_frame, text=texts["preview_cancel"], background=COLOR_DARK_EARTH, foreground=COLOR_MOON_LIGHT, font=("Verdana", 10, "bold"))
     cancel_btn.pack(side="right", padx=10, pady=5, fill="x", expand=True)
-    
-    preview_window.protocol("WM_DELETE_WINDOW", on_close_preview_window) 
-    page_range_entry.focus_set() 
-    _update_preview_display() 
+
+    preview_window.protocol("WM_DELETE_WINDOW", on_close_preview_window)
+    page_range_entry.focus_set()
+    _update_preview_display()
 
 def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_key, entry_prompt_key_main, entry_desc_key, action_callback):
     """Abre a janela de prévia interativa para operações com dois PDFs (Acrescentar, Substituir)."""
@@ -610,23 +610,23 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
         return
 
     # --- Painel de Entrada ---
-    input_group_main = ttkb.Frame(top_input_frame, style='PreviewDark.TFrame') 
+    input_group_main = ttkb.Frame(top_input_frame, style='PreviewDark.TFrame')
     input_group_main.pack(side="left", fill="x", expand=True, padx=(0,10))
 
     ttkb.Label(input_group_main, text=texts["interactive_file_original_label"], background=COLOR_NIGHT_SKY, foreground=COLOR_MOON_LIGHT).pack(anchor="w")
     ttkb.Label(input_group_main, text=os.path.basename(file_path_orig), background=COLOR_NIGHT_SKY, foreground=COLOR_TERRACOTTA, font=("Verdana", 9, "bold")).pack(anchor="w", pady=(0,2))
-    
+
     prompt_text_main = texts[entry_prompt_key_main]
-    if "{total_original}" in prompt_text_main: 
+    if "{total_original}" in prompt_text_main:
         prompt_text_main = prompt_text_main.format(total_original=pdf_doc_orig_ref['total_pages'])
-    
+
     ttkb.Label(input_group_main, text=prompt_text_main, background=COLOR_NIGHT_SKY, foreground=COLOR_MOON_LIGHT).pack(anchor="w", pady=(5,0))
     param_entry = ttkb.Entry(input_group_main, width=20, font=("Verdana", 10), fieldbackground=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY, bordercolor=COLOR_TERRACOTTA)
     param_entry.pack(anchor="w", pady=(2,5))
 
-    input_group_second = ttkb.Frame(top_input_frame, style='PreviewDark.TFrame') 
+    input_group_second = ttkb.Frame(top_input_frame, style='PreviewDark.TFrame')
     input_group_second.pack(side="left", fill="x", expand=True, padx=(10,0))
-    
+
     ttkb.Label(input_group_second, text=texts["interactive_file_second_label"], background=COLOR_NIGHT_SKY, foreground=COLOR_MOON_LIGHT).pack(anchor="w")
     ttkb.Label(input_group_second, text=os.path.basename(file_path_second), background=COLOR_NIGHT_SKY, foreground=COLOR_TERRACOTTA, font=("Verdana", 9, "bold")).pack(anchor="w", pady=(0,2))
     ttkb.Label(input_group_second, text=get_description_for_function(entry_desc_key), background=COLOR_NIGHT_SKY, foreground=COLOR_TERRACOTTA, wraplength=300, justify="left", font=("Verdana", 8)).pack(anchor="w", pady=(5,0))
@@ -637,12 +637,12 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
 
     def _update_dual_preview_display(event=None):
         global preview_images
-        preview_images = [] 
+        preview_images = []
         for widget in scroll_content_orig.winfo_children(): widget.destroy()
         for widget in scroll_content_second.winfo_children(): widget.destroy()
 
         param_str = param_entry.get()
-        
+
         # Reabre os documentos se estiverem fechados
         if pdf_doc_orig_ref['doc'].is_closed: pdf_doc_orig_ref['doc'] = fitz.open(file_path_orig)
         if pdf_doc_second_ref['doc'].is_closed: pdf_doc_second_ref['doc'] = fitz.open(file_path_second)
@@ -653,43 +653,43 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
 
         if title_key == "preview_title_add":
             try:
-                insert_after_page_idx_user = int(param_str) 
+                insert_after_page_idx_user = int(param_str)
                 if not (0 <= insert_after_page_idx_user <= total_orig):
                     ttkb.Label(scroll_content_orig, text=texts["invalid_insert_point"].format(total=total_orig), background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
                     return
             except ValueError:
                 ttkb.Label(scroll_content_orig, text="Ponto de inserção inválido.", background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
                 return
-            
+
             # Exibe a página antes do ponto de inserção
             pages_to_show_orig_context = []
             if insert_after_page_idx_user > 0 and insert_after_page_idx_user <= total_orig :
                 pages_to_show_orig_context.append(insert_after_page_idx_user - 1)
-            
+
             marker_shown = False
-            for idx in pages_to_show_orig_context[:MAX_PREVIEW_IMAGES_SHOWN]: 
+            for idx in pages_to_show_orig_context[:MAX_PREVIEW_IMAGES_SHOWN]:
                 if 0 <= idx < total_orig:
                     page = pdf_orig.load_page(idx)
                     photo = render_pdf_page_to_image(page, MAX_PREVIEW_IMG_WIDTH_DUAL)
                     if photo:
                         ttkb.Label(scroll_content_orig, image=photo, background=COLOR_MOON_LIGHT).pack(pady=5)
                         ttkb.Label(scroll_content_orig, text=texts["preview_page_of_label"].format(num=idx + 1, pdf_name="Orig."), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack()
-            
+
             # Marcador de inserção
             ttkb.Label(scroll_content_orig, text=texts["preview_add_insert_label"], background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA, font="Verdana 10 bold").pack(pady=10, fill="x")
             marker_shown = True
-            
+
             # Exibe a página depois do ponto de inserção
-            idx_after = insert_after_page_idx_user 
+            idx_after = insert_after_page_idx_user
             if idx_after < total_orig:
                     page = pdf_orig.load_page(idx_after)
                     photo = render_pdf_page_to_image(page, MAX_PREVIEW_IMG_WIDTH_DUAL)
                     if photo:
                         ttkb.Label(scroll_content_orig, image=photo, background=COLOR_MOON_LIGHT).pack(pady=5)
                         ttkb.Label(scroll_content_orig, text=texts["preview_page_of_label"].format(num=idx_after + 1, pdf_name="Orig."), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack()
-            elif not marker_shown and total_orig > 0: 
+            elif not marker_shown and total_orig > 0:
                  ttkb.Label(scroll_content_orig, text="(Inserir no final do PDF Original)", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
-            elif total_orig == 0 : 
+            elif total_orig == 0 :
                  ttkb.Label(scroll_content_orig, text="(PDF Original está vazio)", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
 
 
@@ -706,10 +706,10 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
                 ttkb.Label(scroll_content_second, text=f"... e mais {total_sec - MAX_PREVIEW_IMAGES_SHOWN} pág.", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
 
         elif title_key == "preview_title_replace":
-            if not validate_range(param_str, total_orig, allow_comma=False): 
+            if not validate_range(param_str, total_orig, allow_comma=False):
                 ttkb.Label(scroll_content_orig, text=texts["invalid_range"].format(total=total_orig), background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
                 return
-            
+
             indices_to_replace_orig = parse_page_range(param_str, total_orig)
             if not indices_to_replace_orig:
                  ttkb.Label(scroll_content_orig, text="Nenhuma página válida no intervalo.", background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
@@ -723,24 +723,24 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
                     if photo_o:
                         ttkb.Label(scroll_content_orig, image=photo_o, background=COLOR_MOON_LIGHT).pack(pady=5)
                         ttkb.Label(scroll_content_orig, text=texts["preview_replace_original_label"].format(num=orig_idx + 1), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack()
-                
-                if i < total_sec: 
+
+                if i < total_sec:
                     page_r = pdf_second.load_page(i)
                     photo_r = render_pdf_page_to_image(page_r, MAX_PREVIEW_IMG_WIDTH_DUAL)
                     if photo_r:
                         ttkb.Label(scroll_content_second, image=photo_r, background=COLOR_MOON_LIGHT).pack(pady=5)
                         ttkb.Label(scroll_content_second, text=texts["preview_replace_new_label"].format(num=i + 1), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack()
-                else: 
+                else:
                     ttkb.Label(scroll_content_second, text=f"(Sem pág. {i+1} para substituir)", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
-                
-                if i < min(len(indices_to_replace_orig), MAX_PREVIEW_IMAGES_SHOWN) -1 : 
+
+                if i < min(len(indices_to_replace_orig), MAX_PREVIEW_IMAGES_SHOWN) -1 :
                      ttkb.Separator(scroll_content_orig, orient=HORIZONTAL, background=COLOR_TERRACOTTA).pack(pady=5, fill="x", padx=10)
                      ttkb.Separator(scroll_content_second, orient=HORIZONTAL, background=COLOR_TERRACOTTA).pack(pady=5, fill="x", padx=10)
 
 
             if len(indices_to_replace_orig) > MAX_PREVIEW_IMAGES_SHOWN:
                 ttkb.Label(scroll_content_orig, text=f"... e mais {len(indices_to_replace_orig) - MAX_PREVIEW_IMAGES_SHOWN} pág.", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
-            if len(indices_to_replace_orig) > total_sec and total_sec > 0: 
+            if len(indices_to_replace_orig) > total_sec and total_sec > 0:
                  ttkb.Label(scroll_content_second, text=f"Aviso: {len(indices_to_replace_orig)} pág. para substituir, mas PDF substituto tem apenas {total_sec} pág.", background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
             elif total_sec == 0:
                  ttkb.Label(scroll_content_second, text="(PDF de substituição está vazio)", background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
@@ -756,8 +756,8 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
 
     def on_confirm_action_dual():
         """Função chamada ao confirmar a operação com dois PDFs."""
-        on_close_preview_dual() 
-        action_callback(file_path_orig, file_path_second, param_entry.get(), 
+        on_close_preview_dual()
+        action_callback(file_path_orig, file_path_second, param_entry.get(),
                         pdf_doc_orig_ref['total_pages'], pdf_doc_second_ref['total_pages'])
 
     def on_close_preview_dual():
@@ -778,8 +778,8 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
     confirm_btn.pack(side="left", padx=10, pady=5, fill="x", expand=True)
     cancel_btn = ttkb.Button(bottom_action_frame, text=texts["preview_cancel"], background=COLOR_DARK_EARTH, foreground=COLOR_MOON_LIGHT, font=("Verdana", 10, "bold"))
     cancel_btn.pack(side="right", padx=10, pady=5, fill="x", expand=True)
-    
-    preview_window.protocol("WM_DELETE_WINDOW", on_close_preview_dual) 
+
+    preview_window.protocol("WM_DELETE_WINDOW", on_close_preview_dual)
     param_entry.focus_set()
     _update_dual_preview_display()
 
@@ -789,24 +789,24 @@ def on_exclude_button():
     file_path = select_file(title="Selecione o PDF para Excluir Páginas")
     if not file_path: return
     clear_options_frame() # Limpa o painel de opções antes de abrir a prévia
-    open_interactive_preview_single_pdf(file_path, 
-                                         "preview_title_exclude", 
-                                         "interactive_exclude_prompt", 
-                                         "exclude_pages", 
+    open_interactive_preview_single_pdf(file_path,
+                                         "preview_title_exclude",
+                                         "interactive_exclude_prompt",
+                                         "exclude_pages",
                                          exclude_pages_action)
 
-def select_pages(): 
+def select_pages():
     """Lógica para o botão 'Selecionar Página(s)', inicia a prévia interativa."""
     file_path = select_file(title="Selecione o PDF para Selecionar Páginas")
     if not file_path: return
     clear_options_frame()
-    open_interactive_preview_single_pdf(file_path, 
-                                         "preview_title_select", 
-                                         "interactive_select_prompt", 
-                                         "select_pages", 
+    open_interactive_preview_single_pdf(file_path,
+                                         "preview_title_select",
+                                         "interactive_select_prompt",
+                                         "select_pages",
                                          select_pages_action)
 
-def add_selected_pages(): 
+def add_selected_pages():
     """Lógica para o botão 'Acrescentar Página(s)', inicia a prévia interativa com dois PDFs."""
     clear_options_frame()
     file_path_orig = select_file(title=texts["interactive_file_original_label"])
@@ -814,19 +814,19 @@ def add_selected_pages():
 
     file_path_second = select_file(title=texts["interactive_file_second_label"])
     if not file_path_second: return
-    
+
     # Prevenção para não usar o mesmo arquivo duas vezes na adição
     if file_path_orig == file_path_second:
         messagebox.showwarning("Arquivos Iguais", "O PDF original e o PDF a ser acrescentado não podem ser o mesmo arquivo para esta operação.")
         return
 
     open_interactive_preview_dual_pdf(file_path_orig, file_path_second,
-                                      "preview_title_add", 
-                                      "interactive_add_prompt", 
-                                      "add_pages", 
+                                      "preview_title_add",
+                                      "interactive_add_prompt",
+                                      "add_pages",
                                       add_pages_action)
 
-def on_replace_button(): 
+def on_replace_button():
     """Lógica para o botão 'Substituir Página(s)', inicia a prévia interativa com dois PDFs."""
     clear_options_frame()
     file_path_orig = select_file(title=texts["interactive_file_original_label"])
@@ -841,16 +841,16 @@ def on_replace_button():
         return
 
     open_interactive_preview_dual_pdf(file_path_orig, file_path_second,
-                                      "preview_title_replace", 
-                                      "interactive_replace_prompt", 
-                                      "replace_pages", 
+                                      "preview_title_replace",
+                                      "interactive_replace_prompt",
+                                      "replace_pages",
                                       replace_pages_action)
 
 # --- Funções de AÇÃO (Manipulação de PDF) ---
 def exclude_pages_action(file_path, page_range_str, total_pages_original_from_preview):
     """Executa a exclusão de páginas de um PDF."""
     logging.info(f"Iniciando exclusão de páginas para {file_path}, range: '{page_range_str}'")
-    
+
     indices_to_exclude = parse_page_range(page_range_str, total_pages_original_from_preview)
     if not indices_to_exclude and page_range_str.strip(): # Se o range não é vazio, mas não gerou índices válidos
         messagebox.showerror(texts["error"], texts["invalid_range"].format(total=total_pages_original_from_preview) + "\nNenhuma página válida no intervalo para excluir.")
@@ -864,7 +864,7 @@ def exclude_pages_action(file_path, page_range_str, total_pages_original_from_pr
         input_pdf_stream = open(file_path, "rb")
         input_pdf = PdfReader(input_pdf_stream)
         actual_total_pages = len(input_pdf.pages)
-        
+
         # Re-validação da contagem de páginas para o caso do arquivo ter mudado
         if abs(actual_total_pages - total_pages_original_from_preview) > 1 : # Tolerância de 1 para evitar falsos positivos
              logging.warning(f"Contagem de páginas divergente para {file_path}. Prévia: {total_pages_original_from_preview}, Atual: {actual_total_pages}")
@@ -886,14 +886,14 @@ def exclude_pages_action(file_path, page_range_str, total_pages_original_from_pr
             elapsed = time.time() - start_time
             eta = (elapsed / (i + 1)) * (actual_total_pages - (i + 1)) if i > 0 else 0
             status_label.config(text=texts["processing_page"].format(current=i + 1, total=actual_total_pages, eta=eta))
-            
+
             if i not in indices_to_exclude:
                 try:
                     output_pdf.add_page(input_pdf.pages[i])
                     included_page_count += 1
                 except Exception as page_err: # Erro mais geral para renderização de página
                     logging.error(f"Erro ao adicionar página {i+1} de {file_path} durante exclusão: {page_err}")
-            
+
             progress_var.set(i + 1)
             animate_progress_bar()
             root.update_idletasks()
@@ -909,7 +909,7 @@ def exclude_pages_action(file_path, page_range_str, total_pages_original_from_pr
             defaultextension=".pdf",
             filetypes=[("PDF files", "*.pdf")],
             initialfile=f"{os.path.splitext(os.path.basename(file_path))[0]}_excluido.pdf")
-        
+
         if not output_filename:
             status_label.config(text="Operação cancelada pelo usuário.")
             progress_var.set(0)
@@ -939,7 +939,7 @@ def exclude_pages_action(file_path, page_range_str, total_pages_original_from_pr
 def select_pages_action(file_path, page_range_str, total_pages_original_from_preview):
     """Executa a seleção (extração) de páginas de um PDF."""
     logging.info(f"Iniciando seleção de páginas para {file_path}, range: '{page_range_str}'")
-    
+
     indices_to_select = parse_page_range(page_range_str, total_pages_original_from_preview)
     if not indices_to_select and page_range_str.strip():
         messagebox.showerror(texts["error"], texts["invalid_range"].format(total=total_pages_original_from_preview) + "\nNenhuma página válida no intervalo para selecionar.")
@@ -947,13 +947,13 @@ def select_pages_action(file_path, page_range_str, total_pages_original_from_pre
     if not indices_to_select:
         messagebox.showinfo("Nenhuma Ação", "Nenhum intervalo de páginas válido fornecido para seleção.")
         return
-    
+
     input_pdf_stream = None
     try:
         input_pdf_stream = open(file_path, "rb")
         input_pdf = PdfReader(input_pdf_stream)
         actual_total_pages = len(input_pdf.pages)
-        
+
         if abs(actual_total_pages - total_pages_original_from_preview) > 1:
              logging.warning(f"Contagem de páginas divergente para {file_path}. Prévia: {total_pages_original_from_preview}, Atual: {actual_total_pages}")
              if not messagebox.askyesno("Aviso de Alteração", f"O número de páginas em {os.path.basename(file_path)} mudou de {total_pages_original_from_preview} para {actual_total_pages} desde a prévia.\nDeseja continuar a seleção com o intervalo '{page_range_str}' aplicado ao novo total de páginas?"):
@@ -965,7 +965,7 @@ def select_pages_action(file_path, page_range_str, total_pages_original_from_pre
 
         output_pdf = PdfWriter()
         progress_var.set(0)
-        progress_bar["maximum"] = len(indices_to_select) 
+        progress_bar["maximum"] = len(indices_to_select)
         start_time = time.time()
         selected_page_count = 0
 
@@ -979,7 +979,7 @@ def select_pages_action(file_path, page_range_str, total_pages_original_from_pre
                     selected_page_count += 1
                 except Exception as page_err: # Erro mais geral para renderização de página
                     logging.error(f"Erro ao adicionar página selecionada {page_idx+1} de {file_path}: {page_err}")
-                
+
                 progress_var.set(i + 1)
                 animate_progress_bar()
                 root.update_idletasks()
@@ -1042,7 +1042,7 @@ def add_pages_action(file_path_orig, file_path_second, insert_point_str, total_p
         pdf_second_stream = open(file_path_second, "rb")
         pdf_orig_reader = PdfReader(pdf_orig_stream)
         pdf_second_reader = PdfReader(pdf_second_stream)
-        
+
         actual_total_orig = len(pdf_orig_reader.pages)
         actual_total_second = len(pdf_second_reader.pages)
 
@@ -1089,7 +1089,7 @@ def add_pages_action(file_path_orig, file_path_second, insert_point_str, total_p
             output_pdf.add_page(pdf_orig_reader.pages[i])
             processed_pages_count += 1
             if processed_pages_count % 20 == 0: progress_var.set(processed_pages_count); root.update_idletasks()
-        
+
         progress_var.set(total_pages_to_process)
         status_label.config(text="Salvando PDF final...")
         root.update_idletasks()
@@ -1137,9 +1137,9 @@ def replace_pages_action(file_path_orig, file_path_replace, page_range_str, tota
     if not indices_to_replace_orig :
         messagebox.showinfo("Nenhuma Ação", "Nenhum intervalo de páginas válido fornecido para substituição.")
         return
-    
+
     num_pages_to_replace_in_orig = len(indices_to_replace_orig)
-    
+
     pdf_orig_stream = None
     pdf_replace_stream = None
     try:
@@ -1150,7 +1150,7 @@ def replace_pages_action(file_path_orig, file_path_replace, page_range_str, tota
 
         actual_total_orig = len(pdf_orig_reader.pages)
         actual_total_replace = len(pdf_replace_reader.pages)
-        
+
         if actual_total_replace == 0:
             messagebox.showerror(texts["error"], "O PDF de substituição está vazio. Não é possível substituir páginas.")
             return
@@ -1174,12 +1174,12 @@ def replace_pages_action(file_path_orig, file_path_replace, page_range_str, tota
                                        f"Apenas as primeiras {actual_total_replace} página(s) do intervalo original "
                                        f"serão substituídas com as páginas do PDF de substituição. As restantes do intervalo original serão mantidas. Deseja continuar?"):
                 return
-        
+
         output_pdf = PdfWriter()
         progress_var.set(0)
         progress_bar["maximum"] = actual_total_orig # O progresso é baseado no total de páginas do original
         start_time = time.time()
-        
+
         replace_pdf_page_counter = 0 # Contador para as páginas do PDF de substituição
         pages_actually_replaced_count = 0 # Contador de páginas realmente substituídas
 
@@ -1196,7 +1196,7 @@ def replace_pages_action(file_path_orig, file_path_replace, page_range_str, tota
             else:
                 # Caso contrário, mantém a página original
                 output_pdf.add_page(pdf_orig_reader.pages[i])
-            
+
             progress_var.set(i + 1)
             animate_progress_bar()
             root.update_idletasks()
@@ -1248,18 +1248,18 @@ def on_split_button():
         logging.error(f"Erro ao ler PDF para split: {file_path} - {str(e)}")
         messagebox.showerror(texts["error"], f"Erro ao abrir ou ler PDF: {os.path.basename(file_path)}\n({e})")
         return
-    
+
     if total_pages < 2 : # PDFs com 0 ou 1 página não podem ser divididos
         messagebox.showwarning("Divisão Inválida", "O PDF precisa ter pelo menos 2 páginas para ser dividido.")
         return
 
     clear_options_frame()
-    description = get_description_for_function("split_pdf") 
+    description = get_description_for_function("split_pdf")
 
     # Fundo claro, texto escuro
-    ttkb.Label(options_frame, text=texts["custom_parts_prompt"], font=("Georgia", 12, "bold"), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(10,5)) 
+    ttkb.Label(options_frame, text=texts["custom_parts_prompt"], font=("Georgia", 12, "bold"), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(10,5))
     # Fundo claro, texto marrom escuro
-    ttkb.Label(options_frame, text=description, background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH, wraplength=380, justify="center", font=("Verdana", 9)).pack(pady=(0,15)) 
+    ttkb.Label(options_frame, text=description, background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH, wraplength=380, justify="center", font=("Verdana", 9)).pack(pady=(0,15))
 
     button_width = 22
     # Estilo dos botões: texto Noite Estrelada, fundo Luz Pura da Lua, borda Terracota
@@ -1282,7 +1282,7 @@ def on_split_button():
 def split_pdf(file_path, num_parts, total_pages_from_caller):
     """Divide o PDF no número especificado de partes."""
     logging.info(f"Iniciando divisão de {file_path} em {num_parts} partes.")
-    
+
     input_pdf_stream = None # Inicializa stream como None para garantir fechamento
     try:
         input_pdf_stream = open(file_path, "rb")
@@ -1298,10 +1298,10 @@ def split_pdf(file_path, num_parts, total_pages_from_caller):
             logging.warning(f"Contagem de páginas divergente em split_pdf para {file_path}. Chamador: {total_pages_from_caller}, Atual: {actual_total_pages}")
             if not messagebox.askyesno("Aviso de Alteração", f"O PDF {os.path.basename(file_path)} tem {actual_total_pages} páginas (diferente da contagem inicial de {total_pages_from_caller}). Deseja continuar a divisão?"):
                 return
-        
+
         output_base_path = os.path.dirname(file_path)
         original_filename_no_ext = os.path.splitext(os.path.basename(file_path))[0]
-        
+
         pages_per_part = math.ceil(actual_total_pages / num_parts) # Garante que todas as páginas sejam incluídas
 
         progress_var.set(0)
@@ -1316,13 +1316,13 @@ def split_pdf(file_path, num_parts, total_pages_from_caller):
             elapsed = time.time() - start_time
             eta = (elapsed / (i + 1)) * (num_parts - (i + 1)) if i > 0 else 0
             status_label.config(text=texts["processing_page"].format(current=i + 1, total=num_parts, eta=eta))
-            
+
             output_pdf_part = PdfWriter()
             current_page_end_index = min(current_page_start_index + pages_per_part, actual_total_pages)
-            
+
             for page_num in range(current_page_start_index, current_page_end_index):
                 output_pdf_part.add_page(input_pdf.pages[page_num])
-            
+
             if not output_pdf_part.pages: # Se por algum motivo a parte ficou vazia, pula
                 logging.warning(f"Parte {i+1} para {file_path} resultou vazia. Pulando.")
                 continue
@@ -1331,7 +1331,7 @@ def split_pdf(file_path, num_parts, total_pages_from_caller):
             with open(part_filename, "wb") as out_file:
                 output_pdf_part.write(out_file)
             parts_created_count +=1
-            
+
             current_page_start_index = current_page_end_index # Atualiza o índice para a próxima parte
             progress_var.set(i + 1)
             animate_progress_bar()
@@ -1359,15 +1359,15 @@ def split_pdf(file_path, num_parts, total_pages_from_caller):
 def show_custom_split(file_path, total_pages):
     """Mostra o input para divisão customizada no options_frame."""
     clear_options_frame()
-    description = get_description_for_function("split_pdf") 
+    description = get_description_for_function("split_pdf")
 
     # Fundo claro, texto escuro
-    ttkb.Label(options_frame, text=texts["custom_parts_prompt"], font=("Georgia", 12, "bold"), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(10,5)) 
+    ttkb.Label(options_frame, text=texts["custom_parts_prompt"], font=("Georgia", 12, "bold"), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(10,5))
     # Fundo claro, texto marrom escuro
-    ttkb.Label(options_frame, text=f"O PDF selecionado tem {total_pages} páginas.", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH, font=("Verdana", 9)).pack(pady=(0,10)) 
-    
+    ttkb.Label(options_frame, text=f"O PDF selecionado tem {total_pages} páginas.", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH, font=("Verdana", 9)).pack(pady=(0,10))
+
     # Entry com fundo claro e texto escuro
-    entry_parts = ttkb.Entry(options_frame, width=10, font=("Verdana", 10), fieldbackground=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY, bordercolor=COLOR_TERRACOTTA) 
+    entry_parts = ttkb.Entry(options_frame, width=10, font=("Verdana", 10), fieldbackground=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY, bordercolor=COLOR_TERRACOTTA)
     entry_parts.pack(pady=5)
     entry_parts.focus_set()
 
@@ -1381,7 +1381,7 @@ def show_custom_split(file_path, total_pages):
             entry_parts.select_range(0, 'end') # Seleciona o texto para facilitar a correção
 
     # Botão sólido terracota, texto noite estrelada
-    confirm_button = ttkb.Button(options_frame, text="Confirmar Divisão Customizada", command=_confirm_custom_split, width=30, background=COLOR_TERRACOTTA, foreground=COLOR_NIGHT_SKY, font=("Verdana", 10, "bold")) 
+    confirm_button = ttkb.Button(options_frame, text="Confirmar Divisão Customizada", command=_confirm_custom_split, width=30, background=COLOR_TERRACOTTA, foreground=COLOR_NIGHT_SKY, font=("Verdana", 10, "bold"))
     confirm_button.pack(pady=10)
     entry_parts.bind("<Return>", lambda e: _confirm_custom_split())
 
@@ -1389,7 +1389,7 @@ def on_merge_button():
     """Mescla múltiplos arquivos PDF selecionados pelo usuário."""
     clear_options_frame() # Limpa o painel de opções antes de abrir a seleção
     file_paths = select_files(title="Selecione os PDFs para Mesclar (ordem de seleção importa)")
-    
+
     if not file_paths or len(file_paths) < 2:
         messagebox.showwarning("Seleção Insuficiente", "Por favor, selecione pelo menos dois arquivos PDF para mesclar.")
         show_welcome_panel() # Volta ao painel de boas-vindas
@@ -1400,7 +1400,7 @@ def on_merge_button():
         defaultextension=".pdf",
         filetypes=[("PDF files", "*.pdf")],
         initialfile="PDF_Mesclado.pdf")
-    
+
     if not output_filename:
         status_label.config(text="Operação de mesclagem cancelada.")
         return
@@ -1409,7 +1409,7 @@ def on_merge_button():
     try:
         merged_pdf_writer = PdfWriter()
         estimated_total_pages = 0
-        
+
         # Primeira passada para estimar o total de páginas (para a barra de progresso)
         for fp_scan in file_paths:
             try:
@@ -1419,7 +1419,7 @@ def on_merge_button():
                 temp_stream.close() # Fecha o stream de leitura temporária
             except Exception as e_scan:
                 logging.warning(f"Não foi possível ler {fp_scan} para contagem de páginas na mesclagem: {e_scan}")
-        
+
         progress_var.set(0)
         progress_bar["maximum"] = estimated_total_pages if estimated_total_pages > 0 else 1 # Evita divisão por zero
         start_time = time.time()
@@ -1458,7 +1458,7 @@ def on_merge_button():
 
         with open(output_filename, "wb") as out_file:
             merged_pdf_writer.write(out_file)
-        
+
         status_label.config(text="")
         logging.info(f"PDFs mesclados com sucesso em {output_filename}")
         messagebox.showinfo(texts["success"], f"PDFs mesclados com sucesso!\nSalvo em: {output_filename}")
@@ -1475,25 +1475,25 @@ def on_merge_button():
         show_welcome_panel() # Volta ao painel de boas-vindas
 
 # --- Funções de Conversão e Otimização ---
-def choose_conversion(): 
+def choose_conversion():
     """Prepara a interface para a escolha de conversão PDF <-> JPG."""
     clear_options_frame()
     description = get_description_for_function("pdf_jpg")
 
     # Fundo claro, texto escuro
-    ttkb.Label(options_frame, text=texts["choose_conversion"], font=("Georgia", 12, "bold"), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(10,5)) 
+    ttkb.Label(options_frame, text=texts["choose_conversion"], font=("Georgia", 12, "bold"), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(10,5))
     # Fundo claro, texto marrom escuro
-    ttkb.Label(options_frame, text=description, background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH, wraplength=380, justify="center", font=("Verdana", 9)).pack(pady=(0,15)) 
-    
+    ttkb.Label(options_frame, text=description, background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH, wraplength=380, justify="center", font=("Verdana", 9)).pack(pady=(0,15))
+
     button_width = 25
     # Estilo dos botões: texto Noite Estrelada, fundo Luz Pura da Lua, borda colorida
-    pdf_to_jpg_btn = ttkb.Button(options_frame, text=texts["pdf_to_jpg"], 
-                                 command=lambda: pdf_to_jpg(select_file(title="Selecione o PDF para converter para JPG")), 
+    pdf_to_jpg_btn = ttkb.Button(options_frame, text=texts["pdf_to_jpg"],
+                                 command=lambda: pdf_to_jpg(select_file(title="Selecione o PDF para converter para JPG")),
                                  width=button_width, style='GuaraOutlineCategory.TButton')
     pdf_to_jpg_btn.pack(pady=4, fill="x", padx=20)
     create_tooltip(pdf_to_jpg_btn, texts["tooltip_pdf_jpg"])
 
-    jpg_to_pdf_btn = ttkb.Button(options_frame, text=texts["jpg_to_pdf"], command=jpg_to_pdf, 
+    jpg_to_pdf_btn = ttkb.Button(options_frame, text=texts["jpg_to_pdf"], command=jpg_to_pdf,
                                  width=button_width, style='GuaraOutlineCategory.TButton')
     jpg_to_pdf_btn.pack(pady=4, fill="x", padx=20)
     create_tooltip(jpg_to_pdf_btn, texts["tooltip_pdf_jpg"])
@@ -1519,16 +1519,16 @@ def pdf_to_jpg(pdf_file_path):
             elapsed = time.time() - start_time
             eta = (elapsed / (page_number + 1)) * (total_pages - (page_number + 1)) if page_number > 0 else 0
             status_label.config(text=texts["processing_page"].format(current=page_number + 1, total=total_pages, eta=eta))
-            
+
             page = pdf_document.load_page(page_number)
             pix = page.get_pixmap(matrix=fitz.Matrix(2, 2)) # Renderiza com alta resolução (2x)
             output_filename = os.path.join(output_folder, f"{os.path.splitext(os.path.basename(pdf_file_path))[0]}_pagina_{page_number + 1}.jpg")
             pix.save(output_filename) # Salva como JPG
-            
+
             progress_var.set(page_number + 1)
             animate_progress_bar()
             root.update_idletasks()
-            
+
         pdf_document.close()
         status_label.config(text="")
         logging.info(f"PDF {pdf_file_path} convertido para JPGs em {output_folder}")
@@ -1568,12 +1568,12 @@ def jpg_to_pdf():
             elapsed = time.time() - start_time
             eta = (elapsed / (i + 1)) * (total_files - (i + 1)) if i > 0 else 0
             status_label.config(text=f"Processando imagem {i+1}/{total_files}: {os.path.basename(img_path)}... (ETA: {eta:.1f}s)")
-            
+
             try:
                 img_doc = fitz.open(img_path) # Abre a imagem como um "documento" fitz
                 pdf_bytes = img_doc.convert_to_pdf() # Converte a imagem para bytes de PDF
                 img_doc.close() # Fecha o documento da imagem
-                
+
                 img_pdf_page = fitz.open("pdf", pdf_bytes) # Abre esses bytes como um PDF temporário
                 output_pdf.insert_pdf(img_pdf_page) # Insere no PDF de saída
                 img_pdf_page.close() # Fecha o PDF temporário
@@ -1595,7 +1595,7 @@ def jpg_to_pdf():
         else:
             status_label.config(text="Nenhuma imagem convertida.")
             messagebox.showwarning("Sem Conversão", "Nenhuma imagem pôde ser convertida para PDF.")
-            
+
     except Exception as e:
         status_label.config(text="Erro na conversão.")
         logging.error(f"Erro em jpg_to_pdf: {str(e)}")
@@ -1607,26 +1607,26 @@ def jpg_to_pdf():
         clear_options_frame()
         show_welcome_panel()
 
-def on_convert_button(): 
+def on_convert_button():
     """Prepara a interface para a escolha de conversão de PDF para Word ou Excel."""
     clear_options_frame()
-    description = get_description_for_function("convert_pdf") 
-    
+    description = get_description_for_function("convert_pdf")
+
     # Fundo claro, texto escuro
-    ttkb.Label(options_frame, text=texts["choose_output"], font=("Georgia", 12, "bold"), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(10,5)) 
+    ttkb.Label(options_frame, text=texts["choose_output"], font=("Georgia", 12, "bold"), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(10,5))
     # Fundo claro, texto marrom escuro
-    ttkb.Label(options_frame, text=description, background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH, wraplength=380, justify="center", font=("Verdana", 9)).pack(pady=(0,15)) 
+    ttkb.Label(options_frame, text=description, background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH, wraplength=380, justify="center", font=("Verdana", 9)).pack(pady=(0,15))
 
     button_width = 25
     # Estilo dos botões: texto Noite Estrelada, fundo Luz Pura da Lua, borda colorida
-    word_btn = ttkb.Button(options_frame, text=texts["word"], 
-                            command=lambda: save_text_as_word(select_file(title="Selecione o PDF para converter para Word")), 
+    word_btn = ttkb.Button(options_frame, text=texts["word"],
+                            command=lambda: save_text_as_word(select_file(title="Selecione o PDF para converter para Word")),
                             width=button_width, style='GuaraOutlineCategory.TButton')
     word_btn.pack(pady=4, fill="x", padx=20)
     create_tooltip(word_btn, texts["tooltip_convert"])
 
-    excel_btn = ttkb.Button(options_frame, text=texts["excel"], 
-                             command=lambda: save_text_as_excel(select_file(title="Selecione o PDF para converter para Excel")), 
+    excel_btn = ttkb.Button(options_frame, text=texts["excel"],
+                             command=lambda: save_text_as_excel(select_file(title="Selecione o PDF para converter para Excel")),
                              width=button_width, style='GuaraOutlineCategory.TButton')
     excel_btn.pack(pady=4, fill="x", padx=20)
     create_tooltip(excel_btn, texts["tooltip_convert"])
@@ -1636,7 +1636,7 @@ def save_text_as_word(pdf_file_path):
     if not pdf_file_path: return
     output_file = filedialog.asksaveasfilename(
         title="Salvar como Word (.docx)",
-        defaultextension=".docx", 
+        defaultextension=".docx",
         filetypes=[("Word Document", "*.docx")],
         initialfile=f"{os.path.splitext(os.path.basename(pdf_file_path))[0]}.docx")
     if not output_file: return
@@ -1647,7 +1647,7 @@ def save_text_as_word(pdf_file_path):
         status_label.config(text="Extraindo texto para Word...")
         progress_var.set(0)
         progress_bar["maximum"] = len(pdf_document)
-        
+
         full_text = ""
         for i, page in enumerate(pdf_document):
             status_label.config(text=f"Processando página {i+1}/{len(pdf_document)} para Word...")
@@ -1655,7 +1655,7 @@ def save_text_as_word(pdf_file_path):
             progress_var.set(i + 1)
             animate_progress_bar()
             root.update_idletasks()
-            
+
         doc.add_paragraph(full_text) # Adiciona todo o texto extraído como um parágrafo
         pdf_document.close()
         doc.save(output_file)
@@ -1676,7 +1676,7 @@ def save_text_as_excel(pdf_file_path):
     if not pdf_file_path: return
     output_file = filedialog.asksaveasfilename(
         title="Salvar como Excel (.xlsx)",
-        defaultextension=".xlsx", 
+        defaultextension=".xlsx",
         filetypes=[("Excel Workbook", "*.xlsx")],
         initialfile=f"{os.path.splitext(os.path.basename(pdf_file_path))[0]}.xlsx")
     if not output_file: return
@@ -1686,11 +1686,11 @@ def save_text_as_excel(pdf_file_path):
         status_label.config(text="Extraindo tabelas/texto para Excel...")
         progress_var.set(0)
         progress_bar["maximum"] = len(pdf_document)
-        
+
         all_page_data_dfs = [] # Lista para armazenar DataFrames de cada página
         for i, page in enumerate(pdf_document):
             status_label.config(text=f"Analisando página {i+1}/{len(pdf_document)} para Excel...")
-            
+
             tables = page.find_tables()
             if tables.tables: # Se tabelas forem detectadas
                 for table_obj in tables:
@@ -1712,7 +1712,7 @@ def save_text_as_excel(pdf_file_path):
             progress_var.set(i + 1)
             animate_progress_bar()
             root.update_idletasks()
-            
+
         pdf_document.close()
 
         if not all_page_data_dfs:
@@ -1732,7 +1732,7 @@ def save_text_as_excel(pdf_file_path):
                 df_item.to_excel(writer, sheet_name=actual_sheet_name, index=False, header=False) # Sem índice e sem cabeçalho padrão
                 if (df_idx + 1) < len(all_page_data_dfs) : # Incrementa apenas se houver mais dataframes
                      sheet_count +=1
-        
+
         status_label.config(text="")
         logging.info(f"PDF {pdf_file_path} convertido para Excel: {output_file}")
         messagebox.showinfo(texts["success"], f"Conteúdo extraído para Excel!\nSalvo em: {output_file}\n(Nota: A extração pode variar conforme a estrutura do PDF)")
@@ -1760,7 +1760,7 @@ def anonymize_pdf():
     try:
         pdf_doc = fitz.open(file_path)
         current_metadata = pdf_doc.metadata
-        
+
         # Cria um novo dicionário de metadados com todos os valores como None
         new_metadata = { k: None for k in current_metadata.keys() if current_metadata[k] is not None} # remove apenas os que não são None
         logging.info(f"Anonimizando metadata: {new_metadata.keys()}")
@@ -1770,9 +1770,9 @@ def anonymize_pdf():
              logging.info("Nenhum metadado encontrado para remover.")
 
         # Salva o PDF com otimização, garbage collection e limpeza (para remover objetos órfãos)
-        pdf_doc.save(output_filename, garbage=4, deflate=True, clean=True) 
+        pdf_doc.save(output_filename, garbage=4, deflate=True, clean=True)
         pdf_doc.close()
-        
+
         logging.info(f"Metadados do PDF {file_path} anonimizados e salvos em {output_filename}")
         messagebox.showinfo(texts["success"], f"Metadados do PDF removidos/limpos.\nSalvo em: {output_filename}")
     except Exception as e:
@@ -1782,7 +1782,7 @@ def anonymize_pdf():
         clear_options_frame() # Limpa as opções após a conclusão
         show_welcome_panel()
 
-def compact_pdf(): 
+def compact_pdf():
     """Prepara a interface para a escolha do nível de compactação de PDF."""
     file_path = select_file(title="Selecione o PDF para Compactar")
     if not file_path: return
@@ -1791,9 +1791,9 @@ def compact_pdf():
     description = get_description_for_function("compress_pdf")
 
     # Fundo claro, texto escuro
-    ttkb.Label(options_frame, text=texts["compress_level"], font=("Georgia", 12, "bold"), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(10,5)) 
+    ttkb.Label(options_frame, text=texts["compress_level"], font=("Georgia", 12, "bold"), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(10,5))
     # Fundo claro, texto marrom escuro
-    ttkb.Label(options_frame, text=description, background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH, wraplength=380, justify="center", font=("Verdana", 9)).pack(pady=(0,15)) 
+    ttkb.Label(options_frame, text=description, background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH, wraplength=380, justify="center", font=("Verdana", 9)).pack(pady=(0,15))
 
     button_width = 25
     # Estilo dos botões: texto Noite Estrelada, fundo Luz Pura da Lua, borda colorida
@@ -1801,12 +1801,12 @@ def compact_pdf():
                              command=lambda: compact_pdf_with_level(file_path, "leve"),
                              width=button_width, style='GuaraOutlineSuccessCategory.TButton')
     btn_light.pack(pady=4, fill="x", padx=20)
-    
+
     btn_mod = ttkb.Button(options_frame, text=texts["moderate"],
                             command=lambda: compact_pdf_with_level(file_path, "moderada"),
                             width=button_width, style='GuaraOutlineWarningCategory.TButton')
     btn_mod.pack(pady=4, fill="x", padx=20)
-    
+
     btn_agg = ttkb.Button(options_frame, text=texts["aggressive"],
                             command=lambda: compact_pdf_with_level(file_path, "agressiva"),
                             width=button_width, style='GuaraOutlineDangerCategory.TButton')
@@ -1821,10 +1821,10 @@ def process_page(page_num, pdf_path_for_worker, temp_dir_for_worker, dpi_for_wor
         if 0 <= page_num < len(pdf_doc_worker):
             page = pdf_doc_worker.load_page(page_num)
             original_width, original_height = page.rect.width, page.rect.height # Dimensões originais para criar nova página
-            
+
             pix = page.get_pixmap(dpi=dpi_for_worker) # Renderiza a página com a DPI especificada
             img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-            
+
             img_path_result = os.path.join(temp_dir_for_worker, f"page_{page_num}.jpg")
             img.save(img_path_result, format="JPEG", quality=image_quality_for_worker, optimize=True)
             img.close()
@@ -1839,7 +1839,7 @@ def process_page(page_num, pdf_path_for_worker, temp_dir_for_worker, dpi_for_wor
 def compact_pdf_with_level(file_path, level):
     """Compacta o PDF convertendo páginas para imagens JPEG com o nível de qualidade especificado."""
     logging.info(f"Iniciando compactação de {file_path} com nível {level}.")
-    
+
     output_filename = filedialog.asksaveasfilename(
         title=f"Salvar PDF Compactado ({level}) como...",
         defaultextension=".pdf",
@@ -1864,12 +1864,12 @@ def compact_pdf_with_level(file_path, level):
         }
         settings = quality_map[level]
         dpi = settings["dpi"]
-        image_quality = settings["image_quality"] 
-        
+        image_quality = settings["image_quality"]
+
         progress_var.set(0)
         progress_bar["maximum"] = total_pages
         start_time = time.time()
-        
+
         page_processing_results = [None] * total_pages # Lista para armazenar resultados na ordem correta
 
         with tempfile.TemporaryDirectory() as temp_dir: # Cria um diretório temporário para as imagens
@@ -1878,7 +1878,7 @@ def compact_pdf_with_level(file_path, level):
                     executor.submit(process_page, i, file_path, temp_dir, dpi, image_quality): i
                     for i in range(total_pages)
                 }
-                
+
                 processed_count = 0
                 for future in as_completed(future_to_page.keys()): # Itera conforme as tarefas são concluídas
                     page_num_completed = future_to_page[future]
@@ -1890,7 +1890,7 @@ def compact_pdf_with_level(file_path, level):
                             logging.warning(f"Falha ao processar página {page_num_completed+1} de {file_path}. Será pulada.")
                     except Exception as exc:
                         logging.error(f"Página {page_num_completed+1} gerou exceção durante compactação: {exc}")
-                    
+
                     processed_count +=1
                     elapsed = time.time() - start_time
                     eta = (elapsed / processed_count) * (total_pages - processed_count) if processed_count > 0 else 0
@@ -1899,7 +1899,7 @@ def compact_pdf_with_level(file_path, level):
                     if processed_count % (total_pages // 10 or 1) == 0 : # Anima a barra de progresso a cada 10%
                          animate_progress_bar()
                          root.update_idletasks()
-            
+
             status_label.config(text="Montando PDF compactado...")
             root.update_idletasks()
             actual_pages_added = 0
@@ -1926,7 +1926,7 @@ def compact_pdf_with_level(file_path, level):
         new_pdf_output.save(output_filename, garbage=4, deflate=True) # Salva o PDF otimizado
         old_size_mb = get_file_size_mb(file_path)
         new_size_mb = get_file_size_mb(output_filename)
-        
+
         status_label.config(text="")
         logging.info(f"PDF {file_path} compactado com nível {level} e salvo como {output_filename}. Tamanho: {old_size_mb:.2f}MB -> {new_size_mb:.2f}MB")
         messagebox.showinfo(texts["success"], texts["compress_success"].format(old_size=old_size_mb, new_size=new_size_mb))
@@ -1950,23 +1950,23 @@ def compact_pdf_with_level(file_path, level):
 # --- Funções de Ajuda e Animação ---
 def show_help():
     """Exibe o painel de ajuda com informações sobre o software."""
-    clear_options_frame() 
+    clear_options_frame()
     # Título da ajuda com fundo Luz Pura da Lua e texto Noite Estrelada
     ttkb.Label(options_frame, text=texts["help"], font=("Georgia", 14, "bold"), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=10, fill="x")
-    
-    help_text_area = tk.Text(options_frame, wrap="word", font=("Verdana", 10), 
+
+    help_text_area = tk.Text(options_frame, wrap="word", font=("Verdana", 10),
                              relief="flat", borderwidth=0, padx=10, pady=10,
                              bg=COLOR_MOON_LIGHT, # Fundo do texto da ajuda em Luz Pura da Lua
                              fg=COLOR_NIGHT_SKY) # Texto da ajuda em Noite Estrelada
-    
+
     scrollbar_help = ttkb.Scrollbar(options_frame, orient="vertical", command=help_text_area.yview, bootstyle="round-info")
     # Customizando a cor do scrollbar da ajuda
     style.configure("round-info", troughcolor=COLOR_NIGHT_SKY, background=COLOR_TERRACOTTA) # Fundo do scrollbar e cor do polegar
     help_text_area['yscrollcommand'] = scrollbar_help.set
-    
+
     scrollbar_help.pack(side="right", fill="y", padx=(0,5), pady=5)
     help_text_area.pack(fill="both", expand=True, padx=(5,0), pady=5)
-    
+
     help_text_area.insert("1.0", texts["help_text"])
     help_text_area.config(state="disabled") # Torna o texto somente leitura
 
@@ -1974,10 +1974,10 @@ def show_help():
 spots = []
 def animate_organic_background():
     """Cria uma animação orgânica de fundo para o canvas principal."""
-    global spots, canvas_background 
+    global spots, canvas_background
     try:
         # Verifica se o widget ainda existe e tem dimensões válidas
-        if not root.winfo_exists() or not canvas_background.winfo_exists(): return 
+        if not root.winfo_exists() or not canvas_background.winfo_exists(): return
         canvas_width = canvas_background.winfo_width()
         canvas_height = canvas_background.winfo_height()
 
@@ -1987,7 +1987,7 @@ def animate_organic_background():
 
         canvas_background.delete("all") # Limpa o canvas para redesenhar
         # Fundo principal do canvas como Noite Estrelada
-        canvas_background.create_rectangle(0, 0, canvas_width, canvas_height, fill=COLOR_NIGHT_SKY, outline="") 
+        canvas_background.create_rectangle(0, 0, canvas_width, canvas_height, fill=COLOR_NIGHT_SKY, outline="")
 
         # Cores mais orgânicas e terrosas para os "spots" (Terracota do Cerrado e tons relacionados)
         spot_colors = [COLOR_TERRACOTTA, "#D3A475", "#B8860B", "#A0522D", "#8B4513", "#F0A170"]
@@ -2007,7 +2007,7 @@ def animate_organic_background():
         for spot in spots:
             spot["x"] += spot["dx"]
             spot["y"] += spot["dy"]
-            
+
             # Colisão com as bordas
             if spot["x"] - spot["size"] < 0 or spot["x"] + spot["size"] > canvas_width:
                 spot["dx"] *= -1 # Inverte a direção horizontal
@@ -2017,7 +2017,7 @@ def animate_organic_background():
                 spot["dy"] *= -1 # Inverte a direção vertical
                 # Ajusta a posição
                 spot["y"] = max(spot["size"], min(spot["y"], canvas_height - spot["size"]))
-            
+
             canvas_background.create_oval(
                 spot["x"] - spot["size"], spot["y"] - spot["size"],
                 spot["x"] + spot["size"], spot["y"] + spot["size"],
@@ -2047,7 +2047,7 @@ def animate_logo_pulse():
         if 'logo_label' in globals() and logo_label.winfo_exists(): # Verifica se o logo existe
             current_style = logo_label.cget("style")
             if current_style == "GuaraLogo.TLabel": # Alterna entre dois estilos para criar o pulso
-                logo_label.configure(style="GuaraLogoPulse.TLabel") 
+                logo_label.configure(style="GuaraLogoPulse.TLabel")
             else:
                 logo_label.configure(style="GuaraLogo.TLabel")
             root.after(1000, animate_logo_pulse) # Chama novamente após 1 segundo
@@ -2057,21 +2057,22 @@ def animate_logo_pulse():
         logging.warning("logo_label não definido para animate_logo_pulse.")
 
 
-def show_welcome_panel(): 
+def show_welcome_panel():
     """Exibe o painel de boas-vindas no frame de opções."""
     clear_options_frame()
     # Fundo do welcome frame em Luz Pura da Lua
     welcome_frame = ttkb.Frame(options_frame, style='GuaraFrameLight.TFrame')
-    welcome_frame.pack(expand=True, fill="both")
+    welcome_frame.pack(expand=True, fill="both", padx=10, pady=10) # Adicionado padding interno
     # Texto em Dark Earth (marrom escuro)
     welcome_label = ttkb.Label(
         welcome_frame,
-        text="Bem-vindo ao Guará Codex!\nEscolha uma função nos painéis.", 
-        font=("Papyrus", 20, "bold"), 
-        foreground=COLOR_DARK_EARTH, 
+        text="Bem-vindo ao Guará Codex!\nEscolha uma função nos painéis laterais ou no menu superior para começar sua jornada de edição de PDFs.",
+        font=("Papyrus", 18, "bold"), # Reduzido um pouco para melhor wraplength
+        foreground=COLOR_DARK_EARTH,
         justify="center",
         anchor="center",
-        background=COLOR_MOON_LIGHT # Garante que o fundo do label seja o mesmo do frame
+        background=COLOR_MOON_LIGHT, # Garante que o fundo do label seja o mesmo do frame
+        wraplength=400 # Adicionado wraplength
     )
     welcome_label.place(relx=0.5, rely=0.5, anchor="center") # Centraliza o texto no frame
 
@@ -2136,7 +2137,7 @@ style.configure("GuaraLogo.TLabel", background=COLOR_MOON_LIGHT)
 style.configure("GuaraHeaderTitle.TLabel", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH)
 style.configure("GuaraHeaderSubtitle.TLabel", background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA)
 # Labels de descrição dentro dos painéis
-style.configure("GuaraLabelDarkSmall.TLabel", background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY)
+style.configure("GuaraLabelDarkSmall.TLabel", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH)
 style.configure("GuaraLabelDark.TLabel", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH, font=("Verdana", 9))
 
 
@@ -2222,9 +2223,9 @@ progress_bar.pack(side=RIGHT, padx=(0,5))
 panels_main_frame = ttkb.Frame(inner_body_frame, style='GuaraFrameLight.TFrame')
 panels_main_frame.pack(fill=BOTH, expand=True, pady=5)
 panels_main_frame.grid_columnconfigure(0, weight=1)
-panels_main_frame.grid_columnconfigure(1, weight=2)
+panels_main_frame.grid_columnconfigure(1, weight=2) # options_frame está aqui
 panels_main_frame.grid_columnconfigure(2, weight=1)
-panels_main_frame.grid_rowconfigure(0, weight=1)
+panels_main_frame.grid_rowconfigure(0, weight=1, minsize=250) # Adicionado minsize para a linha
 
 # Painel de Manipulação de Páginas - Fundo Luz Pura da Lua, título/borda Terracota
 manip_frame = ttkb.LabelFrame(panels_main_frame, text=texts["manipulation_frame"], padding=10, style='TLabelframe')
@@ -2251,7 +2252,7 @@ for btn_text, btn_cmd, btn_tip, btn_key in buttons_manip_config:
 
 # Frame Central de Opções/Boas-Vindas - Fundo Luz Pura da Lua, título/borda Terracota
 options_frame = ttkb.LabelFrame(panels_main_frame, text="Painel de Boas-Vindas / Opções", padding=15, style='TLabelframe')
-options_frame.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
+options_frame.grid(row=0, column=1, padx=5, pady=5, sticky="nsew", ipady=20) # Adicionado ipady para padding interno vertical
 
 # Painel de Conversão e Otimização - Fundo Luz Pura da Lua, título/borda Terracota
 conv_frame = ttkb.LabelFrame(panels_main_frame, text=texts["conversion_frame"], padding=10, style='TLabelframe')
