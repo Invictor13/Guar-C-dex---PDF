@@ -65,7 +65,7 @@ texts = {
     "aggressive": "Agressiva (Baixa Qualidade)",
     "success": "Sucesso",
     "error": "Erro",
-    "footer": "Desenvolvido por GuaráLabs",
+    "footer": "Desenvolvido por Victor Viana",
     "tooltip_split": "Divida PDFs em partes iguais com precisão!",
     "tooltip_merge": "Combine vários PDFs em um único arquivo!",
     "tooltip_exclude": "Remova páginas específicas do PDF rapidamente com prévia interativa!",
@@ -132,7 +132,7 @@ COLOR_LIGHT_GRAY_BG = '#F0F0F0' # Um cinza bem leve para fundos que precisam ser
 
 # --- Paletas de Cores para Modo Dia/Noite ---
 NIGHT_MODE_COLORS = {
-    "BACKGROUND_PRIMARY": COLOR_NIGHT_SKY,
+    "BACKGROUND_PRIMARY": '#1A1A1A',
     "BACKGROUND_SECONDARY": COLOR_MOON_LIGHT,
     "TEXT_PRIMARY": COLOR_MOON_LIGHT,
     "TEXT_SECONDARY": COLOR_DARK_EARTH, # Usado para texto em fundo claro (COLOR_MOON_LIGHT)
@@ -141,7 +141,7 @@ NIGHT_MODE_COLORS = {
     "ACCENT_SUCCESS": COLOR_ACCENT_GREEN,
     "BUTTON_TEXT": COLOR_NIGHT_SKY, # Texto em botões com fundo claro
     "BUTTON_BACKGROUND": COLOR_MOON_LIGHT, # Fundo de botões como os de categoria
-    "CANVAS_BACKGROUND_FILL": COLOR_NIGHT_SKY, # Cor de preenchimento do canvas_background
+    "CANVAS_BACKGROUND_FILL": '#1A1A1A', # Cor de preenchimento do canvas_background
     "HEADER_TITLE": COLOR_DARK_EARTH, # Cor do título principal no header
     "HEADER_SUBTITLE": COLOR_TERRACOTTA, # Cor do subtítulo no header
     "SEPARATOR": COLOR_TERRACOTTA,
@@ -157,7 +157,7 @@ NIGHT_MODE_COLORS = {
 }
 
 DAY_MODE_COLORS = {
-    "BACKGROUND_PRIMARY": '#F0F0F0',    # Cinza claro
+    "BACKGROUND_PRIMARY": '#FAFAFA',    # Cinza claro
     "BACKGROUND_SECONDARY": '#FFFFFF',   # Branco
     "TEXT_PRIMARY": '#333333',          # Cinza escuro
     "TEXT_SECONDARY": '#555555',        # Cinza médio (para texto em fundo claro secundário)
@@ -166,7 +166,7 @@ DAY_MODE_COLORS = {
     "ACCENT_SUCCESS": '#28A745',        # Verde Padrão
     "BUTTON_TEXT": '#FFFFFF',           # Texto branco em botões de acento
     "BUTTON_BACKGROUND": '#007BFF',     # Fundo azul para botões primários
-    "CANVAS_BACKGROUND_FILL": '#DCDCDC', # Um cinza um pouco mais escuro para o fundo geral
+    "CANVAS_BACKGROUND_FILL": '#FAFAFA', # Um cinza um pouco mais escuro para o fundo geral
     "HEADER_TITLE": '#333333',          # Cor do título principal no header
     "HEADER_SUBTITLE": '#0056b3',       # Azul mais escuro para subtítulo
     "SEPARATOR": '#007BFF',
