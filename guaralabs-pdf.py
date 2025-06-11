@@ -1990,7 +1990,7 @@ def animate_organic_background():
         canvas_background.create_rectangle(0, 0, canvas_width, canvas_height, fill=COLOR_NIGHT_SKY, outline="") 
 
         # Cores mais orgânicas e terrosas para os "spots" (Terracota do Cerrado e tons relacionados)
-        spot_colors = [COLOR_TERRACOTTA, "#D3A475", "#B8860B", "#A0522D", "#8B4513"] 
+        spot_colors = [COLOR_TERRACOTTA, "#D3A475", "#B8860B", "#A0522D", "#8B4513", "#F0A170"]
 
         # Inicializa ou re-inicializa os spots se a lista estiver vazia ou for menor que o esperado
         if not spots or len(spots) != 60: # Número de spots para a animação
@@ -1998,10 +1998,10 @@ def animate_organic_background():
             for _ in range(60): # Cria 60 spots
                 x = random.randint(0, canvas_width)
                 y = random.randint(0, canvas_height)
-                size = random.randint(30, 100) # Tamanho aleatório dos spots
+                size = random.randint(20, 80) # Tamanho aleatório dos spots
                 color = random.choice(spot_colors)
-                dx = random.uniform(-0.3, 0.3) # Velocidade horizontal
-                dy = random.uniform(-0.3, 0.3) # Velocidade vertical
+                dx = random.uniform(-0.8, 0.8) # Velocidade horizontal
+                dy = random.uniform(-0.8, 0.8) # Velocidade vertical
                 spots.append({"x": x, "y": y, "size": size, "color": color, "dx": dx, "dy": dy})
 
         for spot in spots:
@@ -2311,7 +2311,7 @@ if __name__ == "__main__":
         """Inicia as animações de fundo e do logo quando a UI estiver renderizada."""
         try:
             if 'canvas_background' in globals() and canvas_background.winfo_exists() and canvas_background.winfo_width() > 1 and canvas_background.winfo_height() > 1 :
-                # animate_organic_background() # A animação de fundo foi removida para simplificar o layout e focar na funcionalidade
+                animate_organic_background() # A animação de fundo foi removida para simplificar o layout e focar na funcionalidade
                 if 'logo_label' in globals() and logo_label.winfo_exists():
                     # animate_logo_pulse() # A animação do logo foi removida para um look mais limpo
                     pass
