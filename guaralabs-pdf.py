@@ -2062,19 +2062,19 @@ def show_welcome_panel():
     clear_options_frame()
     # Fundo do welcome frame em Luz Pura da Lua
     welcome_frame = ttkb.Frame(options_frame, style='GuaraFrameLight.TFrame')
-    welcome_frame.pack(expand=True, fill="both", padx=10, pady=10) # Adicionado padding interno
+    welcome_frame.pack(expand=True, fill="both", padx=10, pady=10)
     # Texto em Dark Earth (marrom escuro)
     welcome_label = ttkb.Label(
         welcome_frame,
         text="Bem-vindo ao Guará Codex!\nEscolha uma função nos painéis laterais ou no menu superior para começar sua jornada de edição de PDFs.",
-        font=("Papyrus", 18, "bold"), # Reduzido um pouco para melhor wraplength
+        font=("Papyrus", 18, "bold"),
         foreground=COLOR_DARK_EARTH,
         justify="center",
         anchor="center",
-        background=COLOR_MOON_LIGHT, # Garante que o fundo do label seja o mesmo do frame
-        wraplength=400 # Adicionado wraplength
+        background=COLOR_MOON_LIGHT,
+        wraplength=400
     )
-    welcome_label.place(relx=0.5, rely=0.5, anchor="center") # Centraliza o texto no frame
+    welcome_label.place(relx=0.5, rely=0.5, anchor="center")
 
 # --- Configuração da Interface Gráfica Principal (UI) ---
 # Usando um tema base escuro como 'superhero' que já tem um bom contraste padrão
@@ -2225,7 +2225,7 @@ panels_main_frame.pack(fill=BOTH, expand=True, pady=5)
 panels_main_frame.grid_columnconfigure(0, weight=1)
 panels_main_frame.grid_columnconfigure(1, weight=2) # options_frame está aqui
 panels_main_frame.grid_columnconfigure(2, weight=1)
-panels_main_frame.grid_rowconfigure(0, weight=1, minsize=250) # Adicionado minsize para a linha
+panels_main_frame.grid_rowconfigure(0, weight=1, minsize=350) # CHANGED
 
 # Painel de Manipulação de Páginas - Fundo Luz Pura da Lua, título/borda Terracota
 manip_frame = ttkb.LabelFrame(panels_main_frame, text=texts["manipulation_frame"], padding=10, style='TLabelframe')
@@ -2252,7 +2252,7 @@ for btn_text, btn_cmd, btn_tip, btn_key in buttons_manip_config:
 
 # Frame Central de Opções/Boas-Vindas - Fundo Luz Pura da Lua, título/borda Terracota
 options_frame = ttkb.LabelFrame(panels_main_frame, text="Painel de Boas-Vindas / Opções", padding=15, style='TLabelframe')
-options_frame.grid(row=0, column=1, padx=5, pady=5, sticky="nsew", ipady=20) # Adicionado ipady para padding interno vertical
+options_frame.grid(row=0, column=1, padx=5, pady=5, sticky="nsew", ipady=40) # CHANGED
 
 # Painel de Conversão e Otimização - Fundo Luz Pura da Lua, título/borda Terracota
 conv_frame = ttkb.LabelFrame(panels_main_frame, text=texts["conversion_frame"], padding=10, style='TLabelframe')
