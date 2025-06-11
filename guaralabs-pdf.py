@@ -130,6 +130,62 @@ COLOR_DARK_EARTH = '#4a3726' # Um marrom escuro para textos e detalhes, baseado 
 COLOR_ACCENT_GREEN = '#6B8E23' # Um verde musgo ou cerrado para "sucesso" ou "info" alternativo
 COLOR_LIGHT_GRAY_BG = '#F0F0F0' # Um cinza bem leve para fundos que precisam ser muito claros, mas não branco puro.
 
+# --- Paletas de Cores para Modo Dia/Noite ---
+NIGHT_MODE_COLORS = {
+    "BACKGROUND_PRIMARY": COLOR_NIGHT_SKY,
+    "BACKGROUND_SECONDARY": COLOR_MOON_LIGHT,
+    "TEXT_PRIMARY": COLOR_MOON_LIGHT,
+    "TEXT_SECONDARY": COLOR_DARK_EARTH, # Usado para texto em fundo claro (COLOR_MOON_LIGHT)
+    "TEXT_ON_ACCENT": COLOR_MOON_LIGHT, # Texto em cima de botões com cor de acccent
+    "ACCENT_PRIMARY": COLOR_TERRACOTTA,
+    "ACCENT_SUCCESS": COLOR_ACCENT_GREEN,
+    "BUTTON_TEXT": COLOR_NIGHT_SKY, # Texto em botões com fundo claro
+    "BUTTON_BACKGROUND": COLOR_MOON_LIGHT, # Fundo de botões como os de categoria
+    "CANVAS_BACKGROUND_FILL": COLOR_NIGHT_SKY, # Cor de preenchimento do canvas_background
+    "HEADER_TITLE": COLOR_DARK_EARTH, # Cor do título principal no header
+    "HEADER_SUBTITLE": COLOR_TERRACOTTA, # Cor do subtítulo no header
+    "SEPARATOR": COLOR_TERRACOTTA,
+    "PROGRESSBAR_TROUGH": COLOR_NIGHT_SKY,
+    "PROGRESSBAR_BAR": COLOR_TERRACOTTA,
+    "TOOLTIP_BACKGROUND": COLOR_NIGHT_SKY,
+    "TOOLTIP_TEXT": COLOR_MOON_LIGHT,
+    "PREVIEW_BG": COLOR_NIGHT_SKY, # Fundo da janela de prévia
+    "PREVIEW_TEXT_ON_DARK": COLOR_MOON_LIGHT, # Texto em cima de fundo escuro na prévia
+    "PREVIEW_TEXT_ON_LIGHT": COLOR_NIGHT_SKY, # Texto em cima de fundo claro na prévia (ex: canvas de página)
+    "PREVIEW_ACCENT": COLOR_TERRACOTTA, # Cor de destaque na prévia
+    "PREVIEW_CANVAS_PAGE_BG": COLOR_MOON_LIGHT # Fundo do canvas que mostra a página PDF
+}
+
+DAY_MODE_COLORS = {
+    "BACKGROUND_PRIMARY": '#F0F0F0',    # Cinza claro
+    "BACKGROUND_SECONDARY": '#FFFFFF',   # Branco
+    "TEXT_PRIMARY": '#333333',          # Cinza escuro
+    "TEXT_SECONDARY": '#555555',        # Cinza médio (para texto em fundo claro secundário)
+    "TEXT_ON_ACCENT": '#FFFFFF',        # Branco para texto em botões de acento
+    "ACCENT_PRIMARY": '#007BFF',        # Azul Padrão
+    "ACCENT_SUCCESS": '#28A745',        # Verde Padrão
+    "BUTTON_TEXT": '#FFFFFF',           # Texto branco em botões de acento
+    "BUTTON_BACKGROUND": '#007BFF',     # Fundo azul para botões primários
+    "CANVAS_BACKGROUND_FILL": '#DCDCDC', # Um cinza um pouco mais escuro para o fundo geral
+    "HEADER_TITLE": '#333333',          # Cor do título principal no header
+    "HEADER_SUBTITLE": '#0056b3',       # Azul mais escuro para subtítulo
+    "SEPARATOR": '#007BFF',
+    "PROGRESSBAR_TROUGH": '#E9ECEF',    # Cinza bem claro para trilho da barra
+    "PROGRESSBAR_BAR": '#007BFF',       # Azul para a barra
+    "TOOLTIP_BACKGROUND": '#333333',    # Fundo escuro para tooltip
+    "TOOLTIP_TEXT": '#FFFFFF',          # Texto claro para tooltip
+    "PREVIEW_BG": '#EAEAEA',           # Fundo da janela de prévia
+    "PREVIEW_TEXT_ON_DARK": '#333333', # Texto em cima de fundo escuro na prévia (se houver)
+    "PREVIEW_TEXT_ON_LIGHT": '#333333',# Texto em cima de fundo claro na prévia
+    "PREVIEW_ACCENT": '#007BFF',       # Cor de destaque na prévia
+    "PREVIEW_CANVAS_PAGE_BG": '#FFFFFF' # Fundo do canvas que mostra a página PDF
+}
+
+# Variável global para armazenar o modo atual e as cores ativas
+current_theme_mode = "night" # ou "night" por padrão
+active_colors = NIGHT_MODE_COLORS # Inicializa com as cores do modo noturno
+theme_toggle_button = None # Placeholder for the theme toggle button
+
 # --- Funções Utilitárias ---
 def validate_pdf(file_path):
     """Verifica se um arquivo PDF é válido e não está corrompido/vazio."""
@@ -262,7 +318,7 @@ def create_tooltip(widget, text):
             tooltip_window.attributes("-alpha", 0.0) # Inicia transparente
         except tk.TclError: pass
         # Fundo do tooltip em Noite Estrelada e texto em Luz Pura da Lua
-        label = ttkb.Label(tooltip_window, text=text, background=COLOR_NIGHT_SKY, foreground=COLOR_MOON_LIGHT, relief="solid", borderwidth=1, font=("Verdana", 9, "italic"), padding=(6,4), wraplength=280)
+        label = ttkb.Label(tooltip_window, text=text, background=active_colors["TOOLTIP_BACKGROUND"], foreground=active_colors["TOOLTIP_TEXT"], relief="solid", borderwidth=1, font=("Verdana", 9, "italic"), padding=(6,4), wraplength=280)
         label.pack()
         try:
             tooltip_window.attributes("-alpha", 0.95) # Fade in
@@ -327,6 +383,174 @@ def clear_options_frame():
         widget.destroy()
     logging.debug("Frame de opções limpo.")
 
+def apply_active_theme():
+    global root, style, canvas_background, logo_label, title_main_label, subtitle_main_label
+    global divider_main, inner_body_frame, status_progress_frame, status_label, progress_bar
+    global panels_main_frame, manip_frame, desc_manip_label, options_frame, conv_frame, desc_conv_label
+    global footer_frame, footer_divider, footer_button_frame, help_btn, exit_btn
+    global footer_text_frame, footer_label_guaracodex, footer_label_dev
+
+    # --- GENERAL WIDGET STYLES ---
+    style.configure("TFrame", background=active_colors["BACKGROUND_PRIMARY"])
+    style.configure("GuaraFrameLight.TFrame", background=active_colors["BACKGROUND_SECONDARY"])
+
+    style.configure("TLabelframe",
+                    background=active_colors["BACKGROUND_SECONDARY"],
+                    bordercolor=active_colors["ACCENT_PRIMARY"],
+                    relief=tk.SOLID,
+                    borderwidth=1
+                    )
+    style.configure("TLabelframe.Label",
+                    background=active_colors["BACKGROUND_SECONDARY"],
+                    foreground=active_colors["ACCENT_PRIMARY"],
+                    font=("Verdana", 10, "bold")
+                    )
+
+    if 'options_frame' in globals() and options_frame.winfo_exists():
+        options_frame.configure(style='TLabelframe')
+    if 'manip_frame' in globals() and manip_frame.winfo_exists():
+        manip_frame.configure(style='TLabelframe')
+    if 'conv_frame' in globals() and conv_frame.winfo_exists():
+        conv_frame.configure(style='TLabelframe')
+
+
+    style.configure("TButton", font=("Verdana", 10), padding=8) # General button style
+    style.configure("GuaraOutlineCategory.TButton",
+                    foreground=active_colors["TEXT_SECONDARY"],
+                    background=active_colors["BACKGROUND_SECONDARY"],
+                    bordercolor=active_colors["ACCENT_PRIMARY"],
+                    borderwidth=2)
+    style.map("GuaraOutlineCategory.TButton",
+              foreground=[('active', active_colors["TEXT_ON_ACCENT"]), ('!active', active_colors["TEXT_SECONDARY"])],
+              background=[('active', active_colors["ACCENT_PRIMARY"]), ('!disabled', active_colors["BACKGROUND_SECONDARY"])],
+              bordercolor=[('active', active_colors["TEXT_SECONDARY"])])
+
+    # Botões para compactação com níveis (Success, Warning, Danger)
+    style.configure("GuaraOutlineSuccessCategory.TButton", foreground=active_colors["TEXT_SECONDARY"], background=active_colors["BACKGROUND_SECONDARY"], bordercolor=active_colors["ACCENT_SUCCESS"], borderwidth=2)
+    style.map("GuaraOutlineSuccessCategory.TButton", background=[('active', active_colors["ACCENT_SUCCESS"])], foreground=[('active', active_colors["TEXT_ON_ACCENT"])])
+
+    warning_accent_fg = active_colors["TEXT_SECONDARY"]
+    warning_accent_bg = active_colors["BACKGROUND_SECONDARY"]
+    warning_accent_border = active_colors["ACCENT_PRIMARY"] if current_theme_mode == "day" else NIGHT_MODE_COLORS["ACCENT_PRIMARY"] # Terracotta for night
+    warning_accent_active_bg = warning_accent_border
+    warning_accent_active_fg = active_colors["TEXT_ON_ACCENT"]
+
+    style.configure("GuaraOutlineWarningCategory.TButton", foreground=warning_accent_fg, background=warning_accent_bg, bordercolor=warning_accent_border, borderwidth=2)
+    style.map("GuaraOutlineWarningCategory.TButton", background=[('active', warning_accent_active_bg)], foreground=[('active', warning_accent_active_fg)])
+
+    danger_accent_fg = active_colors["TEXT_SECONDARY"]
+    danger_accent_bg = active_colors["BACKGROUND_SECONDARY"]
+    danger_accent_border = '#DC3545' if current_theme_mode == "day" else NIGHT_MODE_COLORS["TEXT_SECONDARY"] # Dark Earth for night
+    danger_accent_active_bg = danger_accent_border
+    danger_accent_active_fg = active_colors["TEXT_ON_ACCENT"]
+
+    style.configure("GuaraOutlineDangerCategory.TButton", foreground=danger_accent_fg, background=danger_accent_bg, bordercolor=danger_accent_border, borderwidth=2)
+    style.map("GuaraOutlineDangerCategory.TButton", background=[('active', danger_accent_active_bg)], foreground=[('active', danger_accent_active_fg)])
+
+    style.configure('GuaraLinkButton.TButton', borderwidth=0, background=active_colors["BACKGROUND_SECONDARY"], foreground=active_colors["ACCENT_PRIMARY"], font=("Verdana", 10, "bold"))
+    style.map('GuaraLinkButton.TButton', foreground=[('active', active_colors["TEXT_SECONDARY"])])
+    style.configure('GuaraExitButton.TButton', borderwidth=0, background=active_colors["BACKGROUND_SECONDARY"], foreground=active_colors["TEXT_SECONDARY"], font=("Verdana", 10, "bold"))
+    style.map('GuaraExitButton.TButton', foreground=[('active', active_colors["ACCENT_PRIMARY"])])
+
+    style.configure("GuaraLogo.TLabel", background=active_colors["BACKGROUND_SECONDARY"])
+    style.configure("GuaraHeaderTitle.TLabel", background=active_colors["BACKGROUND_SECONDARY"], foreground=active_colors["HEADER_TITLE"])
+    style.configure("GuaraHeaderSubtitle.TLabel", background=active_colors["BACKGROUND_SECONDARY"], foreground=active_colors["HEADER_SUBTITLE"])
+    style.configure("GuaraLabelDarkSmall.TLabel", background=active_colors["BACKGROUND_SECONDARY"], foreground=active_colors["TEXT_SECONDARY"])
+    style.configure("GuaraLabelDark.TLabel", background=active_colors["BACKGROUND_SECONDARY"], foreground=active_colors["TEXT_SECONDARY"], font=("Verdana", 9))
+
+    style.configure("Guara.TSeparator", background=active_colors["SEPARATOR"])
+
+    style.configure("GuaraProgressBar.Horizontal.TProgressbar", troughcolor=active_colors["PROGRESSBAR_TROUGH"], background=active_colors["PROGRESSBAR_BAR"], bordercolor=active_colors["ACCENT_PRIMARY"])
+    if 'progress_bar' in globals() and progress_bar.winfo_exists():
+        progress_bar.configure(style='GuaraProgressBar.Horizontal.TProgressbar')
+
+    style.configure("PreviewDark.TFrame", background=active_colors["PREVIEW_BG"])
+    style.configure('PreviewInfo.TLabelframe', background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_ACCENT"], bordercolor=active_colors["PREVIEW_ACCENT"], relief=tk.SOLID, borderwidth=1)
+    style.configure('PreviewInfo.TLabelframe.Label', background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_ACCENT"])
+
+    style.configure("round-info.TScrollbar",
+            troughcolor=active_colors["PREVIEW_BG"],
+            background=active_colors["PREVIEW_ACCENT"],
+            arrowcolor=active_colors["TEXT_ON_ACCENT"] if current_theme_mode == "night" else active_colors["TEXT_PRIMARY"]
+    )
+    style.configure("Preview.TEntry",
+                    fieldbackground=active_colors["BACKGROUND_SECONDARY"],
+                    foreground=active_colors["TEXT_PRIMARY"],
+                    bordercolor=active_colors["PREVIEW_ACCENT"],
+                    insertcolor=active_colors["TEXT_PRIMARY"],
+                    borderwidth=1,
+                    relief=tk.SOLID) # Make border visible
+
+    style.configure("PreviewActionButton.TButton",
+                  font=("Verdana", 10, "bold"),
+                  foreground=active_colors["TEXT_ON_ACCENT"],
+                  background=active_colors["ACCENT_PRIMARY"])
+    style.map("PreviewActionButton.TButton",
+            background=[('active', active_colors["ACCENT_SUCCESS"])])
+
+
+    if 'root' in globals() and root.winfo_exists():
+        root.configure(bg=active_colors["BACKGROUND_PRIMARY"])
+        root.update_idletasks()
+
+    if 'canvas_background' in globals() and canvas_background.winfo_exists():
+        canvas_background.configure(bg=active_colors["CANVAS_BACKGROUND_FILL"])
+        # If animate_organic_background is running, it uses its own colors.
+        # For now, we will disable it during theme switch, or make it theme_aware.
+        # Simplest is to stop it or let canvas_background.configure take precedence if animation is subtle.
+
+    if 'logo_label' in globals() and logo_label.winfo_exists():
+        if hasattr(logo_label, 'image') and logo_label.image is not None: # Check if it's an image logo
+             logo_label.configure(style="GuaraLogo.TLabel") # Ensure it uses the styled background
+        else: # Text fallback
+            logo_label.configure(background=active_colors["BACKGROUND_SECONDARY"], foreground=active_colors["HEADER_TITLE"])
+
+    # Update specific labels by re-applying their style or direct config
+    if 'title_main_label' in globals() and title_main_label.winfo_exists(): title_main_label.configure(style='GuaraHeaderTitle.TLabel')
+    if 'subtitle_main_label' in globals() and subtitle_main_label.winfo_exists(): subtitle_main_label.configure(style='GuaraHeaderSubtitle.TLabel')
+    if 'status_label' in globals() and status_label.winfo_exists(): status_label.configure(style='GuaraLabelDarkSmall.TLabel')
+    if 'desc_manip_label' in globals() and desc_manip_label.winfo_exists(): desc_manip_label.configure(style='GuaraLabelDark.TLabel')
+    if 'desc_conv_label' in globals() and desc_conv_label.winfo_exists(): desc_conv_label.configure(style='GuaraLabelDark.TLabel')
+    if 'footer_label_guaracodex' in globals() and footer_label_guaracodex.winfo_exists(): footer_label_guaracodex.configure(style='GuaraLabelDarkSmall.TLabel')
+    if 'footer_label_dev' in globals() and footer_label_dev.winfo_exists(): footer_label_dev.configure(style='GuaraLabelDarkSmall.TLabel')
+
+    # Update dividers
+    if 'divider_main' in globals() and divider_main.winfo_exists(): divider_main.configure(style='Guara.TSeparator')
+    if 'footer_divider' in globals() and footer_divider.winfo_exists(): footer_divider.configure(style='Guara.TSeparator')
+
+    # Update buttons in footer
+    if 'help_btn' in globals() and help_btn.winfo_exists(): help_btn.configure(style='GuaraLinkButton.TButton')
+    if 'exit_btn' in globals() and exit_btn.winfo_exists(): exit_btn.configure(style='GuaraExitButton.TButton')
+
+    # Re-render dynamic panels like welcome or help if they are active
+    if 'options_frame' in globals() and options_frame.winfo_exists():
+        is_welcome_active = any(hasattr(child, '_is_welcome_panel') for child in options_frame.winfo_children())
+        is_help_active = any(child.winfo_class() == 'Text' for child in options_frame.winfo_children())
+
+        if is_welcome_active:
+            show_welcome_panel()
+        elif is_help_active:
+            show_help()
+
+    if 'root' in globals() and root.winfo_exists():
+        root.update()
+
+def toggle_theme():
+    global current_theme_mode, active_colors, NIGHT_MODE_COLORS, DAY_MODE_COLORS, theme_toggle_button
+
+    if current_theme_mode == "night":
+        current_theme_mode = "day"
+        active_colors = DAY_MODE_COLORS
+        if 'theme_toggle_button' in globals() and theme_toggle_button.winfo_exists():
+            theme_toggle_button.configure(text="Modo Noturno")
+    else:
+        current_theme_mode = "night"
+        active_colors = NIGHT_MODE_COLORS
+        if 'theme_toggle_button' in globals() and theme_toggle_button.winfo_exists():
+            theme_toggle_button.configure(text="Modo Diurno")
+
+    apply_active_theme()
+
 # --- Funções de Prévia Interativa Base ---
 def render_pdf_page_to_image(page_obj, max_width=MAX_PREVIEW_IMG_WIDTH_SINGLE):
     """Renderiza uma página PDF para uma imagem Tkinter PhotoImage."""
@@ -363,7 +587,7 @@ def create_interactive_preview_window_base(title_key, num_pdf_panels=1):
     preview_window.minsize(700 if num_pdf_panels==1 else 1000, 600)
 
     # Fundo da janela de prévia: Noite Estrelada
-    preview_window.configure(bg=COLOR_NIGHT_SKY)
+    preview_window.configure(bg=active_colors["PREVIEW_BG"])
 
     # Frames para organização da janela (todos com fundo Noite Estrelada)
     top_input_frame = ttkb.Frame(preview_window, padding=(10, 10), style='PreviewDark.TFrame')
@@ -388,14 +612,14 @@ def setup_scrollable_canvas_in_frame(parent_frame, label_text="Prévia PDF"):
     canvas_container.pack(fill="both", expand=True)
 
     # Fundo do canvas: Luz Pura da Lua (#ffffff) para visibilidade do PDF
-    canvas = tk.Canvas(canvas_container, bg=COLOR_MOON_LIGHT, highlightthickness=0)
+    canvas = tk.Canvas(canvas_container, bg=active_colors["PREVIEW_CANVAS_PAGE_BG"], highlightthickness=0)
     # Scrollbar: Terracota do Cerrado para a cor do polegar
-    scrollbar = ttkb.Scrollbar(canvas_container, orient="vertical", command=canvas.yview, bootstyle="round-info")
+    scrollbar = ttkb.Scrollbar(canvas_container, orient="vertical", command=canvas.yview, style="round-info.TScrollbar")
     # Configura o estilo da scrollbar diretamente
-    style.configure("round-info", troughcolor=COLOR_NIGHT_SKY, background=COLOR_TERRACOTTA)
+    # style.configure("round-info", troughcolor=COLOR_NIGHT_SKY, background=COLOR_TERRACOTTA) # Moved to apply_active_theme
 
     # Frame interno do canvas com fundo Luz Pura da Lua
-    scrollable_content_frame = ttkb.Frame(canvas, background=COLOR_MOON_LIGHT)
+    scrollable_content_frame = ttkb.Frame(canvas, background=active_colors["PREVIEW_CANVAS_PAGE_BG"])
 
     # Configura o scrollregion do canvas quando o conteúdo é redimensionado
     scrollable_content_frame.bind("<Configure>", lambda e, c=canvas: c.configure(scrollregion=c.bbox("all")))
@@ -441,16 +665,16 @@ def open_interactive_preview_single_pdf(file_path, title_key, entry_prompt_key, 
 
     # --- Painel de Entrada ---
     # Labels com fundo Noite Estrelada e texto Luz Pura da Lua
-    input_main_label = ttkb.Label(top_input_frame, text=texts[entry_prompt_key], background=COLOR_NIGHT_SKY, foreground=COLOR_MOON_LIGHT, font=("Verdana", 10))
+    input_main_label = ttkb.Label(top_input_frame, text=texts[entry_prompt_key], background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_TEXT_ON_DARK"], font=("Verdana", 10))
     input_main_label.pack(side="left", padx=(0,5), pady=5, anchor="w")
 
     # Entry com fundo Luz Pura da Lua e texto Noite Estrelada
-    page_range_entry = ttkb.Entry(top_input_frame, width=25, font=("Verdana", 10), fieldbackground=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY, bordercolor=COLOR_TERRACOTTA)
+    page_range_entry = ttkb.Entry(top_input_frame, width=25, font=("Verdana", 10), style="Preview.TEntry")
     page_range_entry.pack(side="left", padx=5, pady=5, anchor="w")
 
     # Descrição com fundo Noite Estrelada e texto Terracota
     description_text = get_description_for_function(entry_desc_key)
-    description_label = ttkb.Label(top_input_frame, text=description_text, background=COLOR_NIGHT_SKY, foreground=COLOR_TERRACOTTA, wraplength=350, justify="left", font=("Verdana", 8))
+    description_label = ttkb.Label(top_input_frame, text=description_text, background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_ACCENT"], wraplength=350, justify="left", font=("Verdana", 8))
     description_label.pack(side="left", padx=5, pady=5, fill="x", expand=True, anchor="w")
 
     # --- Painel de Prévia ---
@@ -488,14 +712,14 @@ def open_interactive_preview_single_pdf(file_path, title_key, entry_prompt_key, 
                 pdf_doc_ref['total_pages'] = pdf_doc_ref['doc'].page_count
             except Exception as e:
                 logging.error(f"Erro ao reabrir PDF {file_path} para prévia: {e}")
-                ttkb.Label(scroll_content, text="Erro ao carregar PDF para prévia.", background=COLOR_MOON_LIGHT, foreground="red").pack(pady=5)
+                ttkb.Label(scroll_content, text="Erro ao carregar PDF para prévia.", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground="red").pack(pady=5)
                 return
 
         pdf_doc = pdf_doc_ref['doc']
         total_pages = pdf_doc_ref['total_pages']
 
         if not validate_range(range_str, total_pages, allow_comma=True):
-            ttkb.Label(scroll_content, text=texts["invalid_range"].format(total=total_pages), background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
+            ttkb.Label(scroll_content, text=texts["invalid_range"].format(total=total_pages), background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_ACCENT"]).pack(pady=5)
             canvas.yview_moveto(0)
             scroll_content.update_idletasks()
             canvas.config(scrollregion=canvas.bbox("all"))
@@ -511,10 +735,10 @@ def open_interactive_preview_single_pdf(file_path, title_key, entry_prompt_key, 
         operation_type_text = operation_type_text_map.get(title_key, "Páginas Afetadas:")
 
         if operation_type_text:
-            ttkb.Label(scroll_content, text=operation_type_text, background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(5,0), anchor="w", padx=5)
+            ttkb.Label(scroll_content, text=operation_type_text, background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack(pady=(5,0), anchor="w", padx=5)
 
         if not indices_to_display:
-             ttkb.Label(scroll_content, text="Nenhuma página corresponde ao intervalo digitado.", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
+             ttkb.Label(scroll_content, text="Nenhuma página corresponde ao intervalo digitado.", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack(pady=5)
 
         # Exibe as imagens de prévia
         for i in indices_to_display[:MAX_PREVIEW_IMAGES_SHOWN]:
@@ -523,14 +747,14 @@ def open_interactive_preview_single_pdf(file_path, title_key, entry_prompt_key, 
                     page = pdf_doc.load_page(i)
                     photo = render_pdf_page_to_image(page, max_width=MAX_PREVIEW_IMG_WIDTH_SINGLE)
                     if photo:
-                        ttkb.Label(scroll_content, image=photo, background=COLOR_MOON_LIGHT).pack(pady=10, padx=10)
-                        ttkb.Label(scroll_content, text=texts["preview_page_label"].format(num=i + 1), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=(0, 10))
+                        ttkb.Label(scroll_content, image=photo, background=active_colors["PREVIEW_CANVAS_PAGE_BG"]).pack(pady=10, padx=10)
+                        ttkb.Label(scroll_content, text=texts["preview_page_label"].format(num=i + 1), background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack(pady=(0, 10))
                 except Exception as render_err:
                     logging.error(f"Erro ao renderizar página {i+1} para prévia (single_pdf): {render_err}")
-                    ttkb.Label(scroll_content, text=f"Erro ao renderizar pág. {i+1}", background=COLOR_MOON_LIGHT, foreground="red").pack(pady=5)
+                    ttkb.Label(scroll_content, text=f"Erro ao renderizar pág. {i+1}", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground="red").pack(pady=5)
 
         if len(indices_to_display) > MAX_PREVIEW_IMAGES_SHOWN:
-             ttkb.Label(scroll_content, text=f"... e mais {len(indices_to_display) - MAX_PREVIEW_IMAGES_SHOWN} página(s) (não exibidas).", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
+             ttkb.Label(scroll_content, text=f"... e mais {len(indices_to_display) - MAX_PREVIEW_IMAGES_SHOWN} página(s) (não exibidas).", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack(pady=5)
 
         canvas.yview_moveto(0)
         scroll_content.update_idletasks()
@@ -569,9 +793,9 @@ def open_interactive_preview_single_pdf(file_path, title_key, entry_prompt_key, 
     page_range_entry.bind("<Return>", _update_preview_display)
 
     # Botões de ação
-    confirm_btn = ttkb.Button(bottom_action_frame, text=texts["preview_confirm"], background=COLOR_TERRACOTTA, foreground=COLOR_NIGHT_SKY, font=("Verdana", 10, "bold"))
+    confirm_btn = ttkb.Button(bottom_action_frame, text=texts["preview_confirm"], style="PreviewActionButton.TButton")
     confirm_btn.pack(side="left", padx=10, pady=5, fill="x", expand=True)
-    cancel_btn = ttkb.Button(bottom_action_frame, text=texts["preview_cancel"], background=COLOR_DARK_EARTH, foreground=COLOR_MOON_LIGHT, font=("Verdana", 10, "bold"))
+    cancel_btn = ttkb.Button(bottom_action_frame, text=texts["preview_cancel"], style="PreviewActionButton.TButton") # Use a more subdued style if needed
     cancel_btn.pack(side="right", padx=10, pady=5, fill="x", expand=True)
 
     preview_window.protocol("WM_DELETE_WINDOW", on_close_preview_window)
@@ -613,23 +837,23 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
     input_group_main = ttkb.Frame(top_input_frame, style='PreviewDark.TFrame')
     input_group_main.pack(side="left", fill="x", expand=True, padx=(0,10))
 
-    ttkb.Label(input_group_main, text=texts["interactive_file_original_label"], background=COLOR_NIGHT_SKY, foreground=COLOR_MOON_LIGHT).pack(anchor="w")
-    ttkb.Label(input_group_main, text=os.path.basename(file_path_orig), background=COLOR_NIGHT_SKY, foreground=COLOR_TERRACOTTA, font=("Verdana", 9, "bold")).pack(anchor="w", pady=(0,2))
+    ttkb.Label(input_group_main, text=texts["interactive_file_original_label"], background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_TEXT_ON_DARK"]).pack(anchor="w")
+    ttkb.Label(input_group_main, text=os.path.basename(file_path_orig), background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_ACCENT"], font=("Verdana", 9, "bold")).pack(anchor="w", pady=(0,2))
 
     prompt_text_main = texts[entry_prompt_key_main]
     if "{total_original}" in prompt_text_main:
         prompt_text_main = prompt_text_main.format(total_original=pdf_doc_orig_ref['total_pages'])
 
-    ttkb.Label(input_group_main, text=prompt_text_main, background=COLOR_NIGHT_SKY, foreground=COLOR_MOON_LIGHT).pack(anchor="w", pady=(5,0))
-    param_entry = ttkb.Entry(input_group_main, width=20, font=("Verdana", 10), fieldbackground=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY, bordercolor=COLOR_TERRACOTTA)
+    ttkb.Label(input_group_main, text=prompt_text_main, background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_TEXT_ON_DARK"]).pack(anchor="w", pady=(5,0))
+    param_entry = ttkb.Entry(input_group_main, width=20, font=("Verdana", 10), style="Preview.TEntry")
     param_entry.pack(anchor="w", pady=(2,5))
 
     input_group_second = ttkb.Frame(top_input_frame, style='PreviewDark.TFrame')
     input_group_second.pack(side="left", fill="x", expand=True, padx=(10,0))
 
-    ttkb.Label(input_group_second, text=texts["interactive_file_second_label"], background=COLOR_NIGHT_SKY, foreground=COLOR_MOON_LIGHT).pack(anchor="w")
-    ttkb.Label(input_group_second, text=os.path.basename(file_path_second), background=COLOR_NIGHT_SKY, foreground=COLOR_TERRACOTTA, font=("Verdana", 9, "bold")).pack(anchor="w", pady=(0,2))
-    ttkb.Label(input_group_second, text=get_description_for_function(entry_desc_key), background=COLOR_NIGHT_SKY, foreground=COLOR_TERRACOTTA, wraplength=300, justify="left", font=("Verdana", 8)).pack(anchor="w", pady=(5,0))
+    ttkb.Label(input_group_second, text=texts["interactive_file_second_label"], background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_TEXT_ON_DARK"]).pack(anchor="w")
+    ttkb.Label(input_group_second, text=os.path.basename(file_path_second), background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_ACCENT"], font=("Verdana", 9, "bold")).pack(anchor="w", pady=(0,2))
+    ttkb.Label(input_group_second, text=get_description_for_function(entry_desc_key), background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_ACCENT"], wraplength=300, justify="left", font=("Verdana", 8)).pack(anchor="w", pady=(5,0))
 
     # --- Painéis de Prévia ---
     canvas_orig, scroll_content_orig = setup_scrollable_canvas_in_frame(main_preview_area_frame, texts["preview_info_original_pdf"].format(filename=os.path.basename(file_path_orig)))
@@ -655,10 +879,10 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
             try:
                 insert_after_page_idx_user = int(param_str)
                 if not (0 <= insert_after_page_idx_user <= total_orig):
-                    ttkb.Label(scroll_content_orig, text=texts["invalid_insert_point"].format(total=total_orig), background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
+                    ttkb.Label(scroll_content_orig, text=texts["invalid_insert_point"].format(total=total_orig), background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_ACCENT"]).pack(pady=5)
                     return
             except ValueError:
-                ttkb.Label(scroll_content_orig, text="Ponto de inserção inválido.", background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
+                ttkb.Label(scroll_content_orig, text="Ponto de inserção inválido.", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_ACCENT"]).pack(pady=5)
                 return
 
             # Exibe a página antes do ponto de inserção
@@ -672,11 +896,11 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
                     page = pdf_orig.load_page(idx)
                     photo = render_pdf_page_to_image(page, MAX_PREVIEW_IMG_WIDTH_DUAL)
                     if photo:
-                        ttkb.Label(scroll_content_orig, image=photo, background=COLOR_MOON_LIGHT).pack(pady=5)
-                        ttkb.Label(scroll_content_orig, text=texts["preview_page_of_label"].format(num=idx + 1, pdf_name="Orig."), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack()
+                        ttkb.Label(scroll_content_orig, image=photo, background=active_colors["PREVIEW_CANVAS_PAGE_BG"]).pack(pady=5)
+                        ttkb.Label(scroll_content_orig, text=texts["preview_page_of_label"].format(num=idx + 1, pdf_name="Orig."), background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack()
 
             # Marcador de inserção
-            ttkb.Label(scroll_content_orig, text=texts["preview_add_insert_label"], background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA, font="Verdana 10 bold").pack(pady=10, fill="x")
+            ttkb.Label(scroll_content_orig, text=texts["preview_add_insert_label"], background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_ACCENT"], font="Verdana 10 bold").pack(pady=10, fill="x")
             marker_shown = True
 
             # Exibe a página depois do ponto de inserção
@@ -685,34 +909,34 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
                     page = pdf_orig.load_page(idx_after)
                     photo = render_pdf_page_to_image(page, MAX_PREVIEW_IMG_WIDTH_DUAL)
                     if photo:
-                        ttkb.Label(scroll_content_orig, image=photo, background=COLOR_MOON_LIGHT).pack(pady=5)
-                        ttkb.Label(scroll_content_orig, text=texts["preview_page_of_label"].format(num=idx_after + 1, pdf_name="Orig."), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack()
+                        ttkb.Label(scroll_content_orig, image=photo, background=active_colors["PREVIEW_CANVAS_PAGE_BG"]).pack(pady=5)
+                        ttkb.Label(scroll_content_orig, text=texts["preview_page_of_label"].format(num=idx_after + 1, pdf_name="Orig."), background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack()
             elif not marker_shown and total_orig > 0:
-                 ttkb.Label(scroll_content_orig, text="(Inserir no final do PDF Original)", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
+                 ttkb.Label(scroll_content_orig, text="(Inserir no final do PDF Original)", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack(pady=5)
             elif total_orig == 0 :
-                 ttkb.Label(scroll_content_orig, text="(PDF Original está vazio)", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
+                 ttkb.Label(scroll_content_orig, text="(PDF Original está vazio)", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack(pady=5)
 
 
             # Prévia do segundo PDF (a ser inserido)
             if total_sec == 0:
-                ttkb.Label(scroll_content_second, text="(PDF Adicional está vazio)", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
+                ttkb.Label(scroll_content_second, text="(PDF Adicional está vazio)", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack(pady=5)
             for i in range(min(total_sec, MAX_PREVIEW_IMAGES_SHOWN)):
                 page = pdf_second.load_page(i)
                 photo = render_pdf_page_to_image(page, MAX_PREVIEW_IMG_WIDTH_DUAL)
                 if photo:
-                    ttkb.Label(scroll_content_second, image=photo, background=COLOR_MOON_LIGHT).pack(pady=5)
-                    ttkb.Label(scroll_content_second, text=texts["preview_page_of_label"].format(num=i + 1, pdf_name="Adic."), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack()
+                    ttkb.Label(scroll_content_second, image=photo, background=active_colors["PREVIEW_CANVAS_PAGE_BG"]).pack(pady=5)
+                    ttkb.Label(scroll_content_second, text=texts["preview_page_of_label"].format(num=i + 1, pdf_name="Adic."), background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack()
             if total_sec > MAX_PREVIEW_IMAGES_SHOWN:
-                ttkb.Label(scroll_content_second, text=f"... e mais {total_sec - MAX_PREVIEW_IMAGES_SHOWN} pág.", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
+                ttkb.Label(scroll_content_second, text=f"... e mais {total_sec - MAX_PREVIEW_IMAGES_SHOWN} pág.", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack(pady=5)
 
         elif title_key == "preview_title_replace":
             if not validate_range(param_str, total_orig, allow_comma=False):
-                ttkb.Label(scroll_content_orig, text=texts["invalid_range"].format(total=total_orig), background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
+                ttkb.Label(scroll_content_orig, text=texts["invalid_range"].format(total=total_orig), background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_ACCENT"]).pack(pady=5)
                 return
 
             indices_to_replace_orig = parse_page_range(param_str, total_orig)
             if not indices_to_replace_orig:
-                 ttkb.Label(scroll_content_orig, text="Nenhuma página válida no intervalo.", background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
+                 ttkb.Label(scroll_content_orig, text="Nenhuma página válida no intervalo.", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_ACCENT"]).pack(pady=5)
                  return
 
             # Exibe as páginas do PDF original a serem substituídas e as páginas do PDF substituto
@@ -721,29 +945,29 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
                     page_o = pdf_orig.load_page(orig_idx)
                     photo_o = render_pdf_page_to_image(page_o, MAX_PREVIEW_IMG_WIDTH_DUAL)
                     if photo_o:
-                        ttkb.Label(scroll_content_orig, image=photo_o, background=COLOR_MOON_LIGHT).pack(pady=5)
-                        ttkb.Label(scroll_content_orig, text=texts["preview_replace_original_label"].format(num=orig_idx + 1), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack()
+                        ttkb.Label(scroll_content_orig, image=photo_o, background=active_colors["PREVIEW_CANVAS_PAGE_BG"]).pack(pady=5)
+                        ttkb.Label(scroll_content_orig, text=texts["preview_replace_original_label"].format(num=orig_idx + 1), background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack()
 
                 if i < total_sec:
                     page_r = pdf_second.load_page(i)
                     photo_r = render_pdf_page_to_image(page_r, MAX_PREVIEW_IMG_WIDTH_DUAL)
                     if photo_r:
-                        ttkb.Label(scroll_content_second, image=photo_r, background=COLOR_MOON_LIGHT).pack(pady=5)
-                        ttkb.Label(scroll_content_second, text=texts["preview_replace_new_label"].format(num=i + 1), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack()
+                        ttkb.Label(scroll_content_second, image=photo_r, background=active_colors["PREVIEW_CANVAS_PAGE_BG"]).pack(pady=5)
+                        ttkb.Label(scroll_content_second, text=texts["preview_replace_new_label"].format(num=i + 1), background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack()
                 else:
-                    ttkb.Label(scroll_content_second, text=f"(Sem pág. {i+1} para substituir)", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
+                    ttkb.Label(scroll_content_second, text=f"(Sem pág. {i+1} para substituir)", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack(pady=5)
 
                 if i < min(len(indices_to_replace_orig), MAX_PREVIEW_IMAGES_SHOWN) -1 :
-                     ttkb.Separator(scroll_content_orig, orient=HORIZONTAL, background=COLOR_TERRACOTTA).pack(pady=5, fill="x", padx=10)
-                     ttkb.Separator(scroll_content_second, orient=HORIZONTAL, background=COLOR_TERRACOTTA).pack(pady=5, fill="x", padx=10)
+                     ttkb.Separator(scroll_content_orig, orient=HORIZONTAL, style='Guara.TSeparator').pack(pady=5, fill="x", padx=10) # Use themed separator
+                     ttkb.Separator(scroll_content_second, orient=HORIZONTAL, style='Guara.TSeparator').pack(pady=5, fill="x", padx=10)
 
 
             if len(indices_to_replace_orig) > MAX_PREVIEW_IMAGES_SHOWN:
-                ttkb.Label(scroll_content_orig, text=f"... e mais {len(indices_to_replace_orig) - MAX_PREVIEW_IMAGES_SHOWN} pág.", background=COLOR_MOON_LIGHT, foreground=COLOR_DARK_EARTH).pack(pady=5)
+                ttkb.Label(scroll_content_orig, text=f"... e mais {len(indices_to_replace_orig) - MAX_PREVIEW_IMAGES_SHOWN} pág.", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_TEXT_ON_LIGHT"]).pack(pady=5)
             if len(indices_to_replace_orig) > total_sec and total_sec > 0:
-                 ttkb.Label(scroll_content_second, text=f"Aviso: {len(indices_to_replace_orig)} pág. para substituir, mas PDF substituto tem apenas {total_sec} pág.", background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
+                 ttkb.Label(scroll_content_second, text=f"Aviso: {len(indices_to_replace_orig)} pág. para substituir, mas PDF substituto tem apenas {total_sec} pág.", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_ACCENT"]).pack(pady=5)
             elif total_sec == 0:
-                 ttkb.Label(scroll_content_second, text="(PDF de substituição está vazio)", background=COLOR_MOON_LIGHT, foreground=COLOR_TERRACOTTA).pack(pady=5)
+                 ttkb.Label(scroll_content_second, text="(PDF de substituição está vazio)", background=active_colors["PREVIEW_CANVAS_PAGE_BG"], foreground=active_colors["PREVIEW_ACCENT"]).pack(pady=5)
 
         # Ajusta as scrollregions dos canvases
         for canvas_item in [canvas_orig, canvas_second]:
@@ -774,9 +998,9 @@ def open_interactive_preview_dual_pdf(file_path_orig, file_path_second, title_ke
     param_entry.bind("<Return>", _update_dual_preview_display)
 
     # Botões de ação
-    confirm_btn = ttkb.Button(bottom_action_frame, text=texts["preview_confirm"], background=COLOR_TERRACOTTA, foreground=COLOR_NIGHT_SKY, font=("Verdana", 10, "bold"))
+    confirm_btn = ttkb.Button(bottom_action_frame, text=texts["preview_confirm"], style="PreviewActionButton.TButton")
     confirm_btn.pack(side="left", padx=10, pady=5, fill="x", expand=True)
-    cancel_btn = ttkb.Button(bottom_action_frame, text=texts["preview_cancel"], background=COLOR_DARK_EARTH, foreground=COLOR_MOON_LIGHT, font=("Verdana", 10, "bold"))
+    cancel_btn = ttkb.Button(bottom_action_frame, text=texts["preview_cancel"], style="PreviewActionButton.TButton") # Use a more subdued style if needed
     cancel_btn.pack(side="right", padx=10, pady=5, fill="x", expand=True)
 
     preview_window.protocol("WM_DELETE_WINDOW", on_close_preview_dual)
@@ -1950,18 +2174,16 @@ def compact_pdf_with_level(file_path, level):
 # --- Funções de Ajuda e Animação ---
 def show_help():
     """Exibe o painel de ajuda com informações sobre o software."""
-    clear_options_frame()
-    # Título da ajuda com fundo Luz Pura da Lua e texto Noite Estrelada
-    ttkb.Label(options_frame, text=texts["help"], font=("Georgia", 14, "bold"), background=COLOR_MOON_LIGHT, foreground=COLOR_NIGHT_SKY).pack(pady=10, fill="x")
+    clear_options_frame() # Ensure it's cleared first
+    ttkb.Label(options_frame, text=texts["help"], font=("Georgia", 14, "bold"), background=active_colors["BACKGROUND_SECONDARY"], foreground=active_colors["TEXT_PRIMARY"]).pack(pady=10, fill="x") # TEXT_PRIMARY for titles on light bg
 
     help_text_area = tk.Text(options_frame, wrap="word", font=("Verdana", 10),
                              relief="flat", borderwidth=0, padx=10, pady=10,
-                             bg=COLOR_MOON_LIGHT, # Fundo do texto da ajuda em Luz Pura da Lua
-                             fg=COLOR_NIGHT_SKY) # Texto da ajuda em Noite Estrelada
+                             bg=active_colors["BACKGROUND_SECONDARY"],
+                             fg=active_colors["TEXT_PRIMARY"],
+                             insertbackground=active_colors["TEXT_PRIMARY"])
 
-    scrollbar_help = ttkb.Scrollbar(options_frame, orient="vertical", command=help_text_area.yview, bootstyle="round-info")
-    # Customizando a cor do scrollbar da ajuda
-    style.configure("round-info", troughcolor=COLOR_NIGHT_SKY, background=COLOR_TERRACOTTA) # Fundo do scrollbar e cor do polegar
+    scrollbar_help = ttkb.Scrollbar(options_frame, orient="vertical", command=help_text_area.yview, style="round-info.TScrollbar") # Style updated by apply_active_theme
     help_text_area['yscrollcommand'] = scrollbar_help.set
 
     scrollbar_help.pack(side="right", fill="y", padx=(0,5), pady=5)
@@ -2059,19 +2281,19 @@ def animate_logo_pulse():
 
 def show_welcome_panel():
     """Exibe o painel de boas-vindas no frame de opções."""
-    clear_options_frame()
-    # Fundo do welcome frame em Luz Pura da Lua
-    welcome_frame = ttkb.Frame(options_frame, style='GuaraFrameLight.TFrame')
+    clear_options_frame() # Ensure it's cleared first
+    welcome_frame = ttkb.Frame(options_frame, style='GuaraFrameLight.TFrame') # Style will be updated by apply_active_theme
+    welcome_frame._is_welcome_panel = True # Custom attribute for identification
     welcome_frame.pack(expand=True, fill="both", padx=10, pady=10)
-    # Texto em Dark Earth (marrom escuro)
+
     welcome_label = ttkb.Label(
         welcome_frame,
         text="Bem-vindo ao Guará Codex!\nEscolha uma função nos painéis laterais ou no menu superior para começar sua jornada de edição de PDFs.",
         font=("Papyrus", 18, "bold"),
-        foreground=COLOR_DARK_EARTH,
+        foreground=active_colors["TEXT_SECONDARY"],
         justify="center",
         anchor="center",
-        background=COLOR_MOON_LIGHT,
+        background=active_colors["BACKGROUND_SECONDARY"],
         wraplength=400
     )
     welcome_label.place(relx=0.5, rely=0.5, anchor="center")
@@ -2081,7 +2303,7 @@ def show_welcome_panel():
 root = ttkb.Window(themename="superhero")
 root.title(texts["title"])
 root.state("zoomed") # Inicia maximizado
-root.minsize(1100, 750) # Tamanho mínimo para garantir a legibilidade
+root.minsize(1300, 850) # Tamanho mínimo para garantir a legibilidade
 
 style = ttkb.Style()
 
@@ -2159,7 +2381,7 @@ canvas_background.pack(expand=True, fill="both")
 
 # Frame para o conteúdo principal, centralizado e com tamanho fixo para estabilidade
 content_outer_frame = ttkb.Frame(canvas_background, padding=20, style='TFrame')
-content_outer_frame.place(relx=0.5, rely=0.5, anchor="center", width=1080, height=700)
+content_outer_frame.place(relx=0.5, rely=0.5, anchor="center", width=1280, height=800)
 
 # Content_frame agora é um TFrame com fundo claro para agrupar tudo
 content_frame = ttkb.Frame(content_outer_frame, style='GuaraFrameLight.TFrame', padding=15)
@@ -2225,7 +2447,7 @@ panels_main_frame.pack(fill=BOTH, expand=True, pady=5)
 panels_main_frame.grid_columnconfigure(0, weight=1)
 panels_main_frame.grid_columnconfigure(1, weight=2) # options_frame está aqui
 panels_main_frame.grid_columnconfigure(2, weight=1)
-panels_main_frame.grid_rowconfigure(0, weight=1, minsize=350) # CHANGED
+panels_main_frame.grid_rowconfigure(0, weight=1, minsize=450) # CHANGED
 
 # Painel de Manipulação de Páginas - Fundo Luz Pura da Lua, título/borda Terracota
 manip_frame = ttkb.LabelFrame(panels_main_frame, text=texts["manipulation_frame"], padding=10, style='TLabelframe')
@@ -2285,15 +2507,19 @@ footer_divider = ttkb.Separator(footer_frame, orient=HORIZONTAL, style='Guara.TS
 footer_divider.pack(fill="x", pady=(5,2))
 
 footer_button_frame = ttkb.Frame(footer_frame, style='GuaraFrameLight.TFrame')
-footer_button_frame.pack(pady=2)
+footer_button_frame.pack(pady=2, fill='x') # Fill x to allow packing left and right
 
-# Botões de Ajuda e Sair (links) - Texto Terracota/Dark Earth, fundo Luz Pura da Lua
 help_btn = ttkb.Button(footer_button_frame, text=texts["help"], command=show_help, width=15, style='GuaraLinkButton.TButton')
-help_btn.pack(side="left", padx=20)
+help_btn.pack(side="left", padx=(20, 10)) # Add some padding
 create_tooltip(help_btn, texts["tooltip_help"])
 
+initial_toggle_text = "Modo Diurno" if current_theme_mode == "night" else "Modo Noturno"
+theme_toggle_button = ttkb.Button(footer_button_frame, text=initial_toggle_text, command=toggle_theme, width=15, style='GuaraLinkButton.TButton')
+theme_toggle_button.pack(side="left", padx=10)
+create_tooltip(theme_toggle_button, "Alternar entre modo claro e escuro")
+
 exit_btn = ttkb.Button(footer_button_frame, text=texts["exit"], command=root.quit, width=15, style='GuaraExitButton.TButton')
-exit_btn.pack(side="left", padx=20)
+exit_btn.pack(side="right", padx=(10, 20)) # Pack to the right
 create_tooltip(exit_btn, texts["tooltip_exit"])
 
 footer_text_frame = ttkb.Frame(footer_frame, style='GuaraFrameLight.TFrame')
@@ -2325,7 +2551,13 @@ if __name__ == "__main__":
 
     root.after(50, start_animation_if_ready)
 
-    show_welcome_panel()
+    # Initial setup of theme variables based on default (night)
+    current_theme_mode = "night"
+    active_colors = NIGHT_MODE_COLORS # Ensure this is set before first apply_active_theme
+
+    show_welcome_panel() # This now uses active_colors
+
+    apply_active_theme() # Apply the initial theme after all widgets are defined
 
     root.bind("<Escape>", lambda event: root.quit())
 
