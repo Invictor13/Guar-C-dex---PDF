@@ -2061,7 +2061,7 @@ def show_welcome_panel():
     """Exibe o painel de boas-vindas no frame de opções."""
     clear_options_frame()
     # Fundo do welcome frame em Luz Pura da Lua
-    welcome_frame = ttkb.Frame(options_frame, background=COLOR_MOON_LIGHT)
+    welcome_frame = ttkb.Frame(options_frame, style='GuaraFrameLight.TFrame')
     welcome_frame.pack(expand=True, fill="both")
     # Texto em Dark Earth (marrom escuro)
     welcome_label = ttkb.Label(
