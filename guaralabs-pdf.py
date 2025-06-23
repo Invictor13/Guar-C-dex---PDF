@@ -132,53 +132,55 @@ COLOR_LIGHT_GRAY_BG = '#F0F0F0' # Um cinza bem leve para fundos que precisam ser
 
 # --- Paletas de Cores para Modo Dia/Noite ---
 NIGHT_MODE_COLORS = {
-    "BACKGROUND_PRIMARY": '#1A1A1A',
-    "BACKGROUND_SECONDARY": COLOR_MOON_LIGHT,
-    "TEXT_PRIMARY": COLOR_MOON_LIGHT,
-    "TEXT_SECONDARY": COLOR_DARK_EARTH, # Usado para texto em fundo claro (COLOR_MOON_LIGHT)
-    "TEXT_ON_ACCENT": COLOR_MOON_LIGHT, # Texto em cima de botões com cor de acccent
-    "ACCENT_PRIMARY": COLOR_TERRACOTTA,
-    "ACCENT_SUCCESS": COLOR_ACCENT_GREEN,
-    "BUTTON_TEXT": COLOR_NIGHT_SKY, # Texto em botões com fundo claro
-    "BUTTON_BACKGROUND": COLOR_MOON_LIGHT, # Fundo de botões como os de categoria
-    "CANVAS_BACKGROUND_FILL": '#1A1A1A', # Cor de preenchimento do canvas_background
-    "HEADER_TITLE": COLOR_DARK_EARTH, # Cor do título principal no header
-    "HEADER_SUBTITLE": COLOR_TERRACOTTA, # Cor do subtítulo no header
-    "SEPARATOR": COLOR_TERRACOTTA,
-    "PROGRESSBAR_TROUGH": COLOR_NIGHT_SKY,
-    "PROGRESSBAR_BAR": COLOR_TERRACOTTA,
-    "TOOLTIP_BACKGROUND": COLOR_NIGHT_SKY,
-    "TOOLTIP_TEXT": COLOR_MOON_LIGHT,
-    "PREVIEW_BG": COLOR_NIGHT_SKY, # Fundo da janela de prévia
-    "PREVIEW_TEXT_ON_DARK": COLOR_MOON_LIGHT, # Texto em cima de fundo escuro na prévia
-    "PREVIEW_TEXT_ON_LIGHT": COLOR_NIGHT_SKY, # Texto em cima de fundo claro na prévia (ex: canvas de página)
-    "PREVIEW_ACCENT": COLOR_TERRACOTTA, # Cor de destaque na prévia
-    "PREVIEW_CANVAS_PAGE_BG": COLOR_MOON_LIGHT # Fundo do canvas que mostra a página PDF
+    "BACKGROUND_PRIMARY": "#000000",       # Black
+    "BACKGROUND_SECONDARY": "#2A2A2A",     # Dark Gray (for panels, headers)
+    "TEXT_PRIMARY": "#FFFFFF",             # White (for text on primary background)
+    "TEXT_SECONDARY": "#E0E0E0",         # Light Gray (for text on secondary background, or less emphasized text)
+    "TEXT_ON_ACCENT": "#FFFFFF",           # White (for text on accent-colored elements)
+    "ACCENT_PRIMARY": "#E59400",         # Vibrant Amber/Orange (NEW Primary Accent)
+    "ACCENT_SUCCESS": "#2E8B57",         # SeaGreen (NEW Success Accent - good contrast with amber and dark bg)
+    "BUTTON_TEXT": "#FFFFFF",             # White (text for default buttons on dark backgrounds)
+    "BUTTON_BACKGROUND": "#424242",       # Medium-Dark Gray (default background for some buttons if not using ACCENT_PRIMARY)
+    "CANVAS_BACKGROUND_FILL": "#000000",   # Black (main app background canvas)
+    "HEADER_TITLE": "#FFFFFF",             # White (header title text on BACKGROUND_SECONDARY)
+    "HEADER_SUBTITLE": "#E59400",        # Vibrant Amber/Orange (NEW - using ACCENT_PRIMARY for subtitle)
+    "SEPARATOR": "#5C5C5C",             # Medium-Dark Gray (for dividers)
+    "PROGRESSBAR_TROUGH": "#333333",       # Dark Gray (progress bar trough)
+    "PROGRESSBAR_BAR": "#E59400",          # Vibrant Amber/Orange (NEW - using ACCENT_PRIMARY for progress bar)
+    "TOOLTIP_BACKGROUND": "#1E1E1E",       # Very Dark Gray (tooltip background)
+    "TOOLTIP_TEXT": "#E0E0E0",             # Light Gray (tooltip text)
+    "PREVIEW_BG": "#1E1E1E",               # Very Dark Gray (preview window background)
+    "PREVIEW_TEXT_ON_DARK": "#E0E0E0",     # Light Gray (text on dark areas in preview)
+    "PREVIEW_TEXT_ON_LIGHT": "#000000",    # Black (text on light areas in preview, e.g., PDF page canvas)
+    "PREVIEW_ACCENT": "#E59400",         # Vibrant Amber/Orange (NEW - using ACCENT_PRIMARY for preview accents)
+    "PREVIEW_CANVAS_PAGE_BG": "#FFFFFF",   # White (background for the PDF page rendering canvas)
+    "FOOTER_BUTTON_BACKGROUND": "#3C3C3C"  # Distinct background for footer buttons
 }
 
 DAY_MODE_COLORS = {
-    "BACKGROUND_PRIMARY": '#FAFAFA',    # Cinza claro
-    "BACKGROUND_SECONDARY": '#FFFFFF',   # Branco
-    "TEXT_PRIMARY": '#333333',          # Cinza escuro
-    "TEXT_SECONDARY": '#555555',        # Cinza médio (para texto em fundo claro secundário)
-    "TEXT_ON_ACCENT": '#FFFFFF',        # Branco para texto em botões de acento
-    "ACCENT_PRIMARY": '#007BFF',        # Azul Padrão
-    "ACCENT_SUCCESS": '#28A745',        # Verde Padrão
-    "BUTTON_TEXT": '#FFFFFF',           # Texto branco em botões de acento
-    "BUTTON_BACKGROUND": '#007BFF',     # Fundo azul para botões primários
-    "CANVAS_BACKGROUND_FILL": '#FAFAFA', # Um cinza um pouco mais escuro para o fundo geral
-    "HEADER_TITLE": '#333333',          # Cor do título principal no header
-    "HEADER_SUBTITLE": '#0056b3',       # Azul mais escuro para subtítulo
-    "SEPARATOR": '#007BFF',
-    "PROGRESSBAR_TROUGH": '#E9ECEF',    # Cinza bem claro para trilho da barra
-    "PROGRESSBAR_BAR": '#007BFF',       # Azul para a barra
-    "TOOLTIP_BACKGROUND": '#333333',    # Fundo escuro para tooltip
-    "TOOLTIP_TEXT": '#FFFFFF',          # Texto claro para tooltip
-    "PREVIEW_BG": '#EAEAEA',           # Fundo da janela de prévia
-    "PREVIEW_TEXT_ON_DARK": '#333333', # Texto em cima de fundo escuro na prévia (se houver)
-    "PREVIEW_TEXT_ON_LIGHT": '#333333',# Texto em cima de fundo claro na prévia
-    "PREVIEW_ACCENT": '#007BFF',       # Cor de destaque na prévia
-    "PREVIEW_CANVAS_PAGE_BG": '#FFFFFF' # Fundo do canvas que mostra a página PDF
+    "BACKGROUND_PRIMARY": "#FFFFFF",       # White
+    "BACKGROUND_SECONDARY": "#F0EDE5",     # Off-white/Very Light Grayish Beige (was Beige #F5F5DC, now slightly more neutral gray/brownish)
+    "TEXT_PRIMARY": "#1C1C1C",             # Near Black (was #000000, slightly softer)
+    "TEXT_SECONDARY": "#5D4037",         # Rich Dark Brown (was #4A3726)
+    "TEXT_ON_ACCENT": "#FFFFFF",           # White (text on dark brown accent elements)
+    "ACCENT_PRIMARY": "#5D4037",         # Rich Dark Brown (NEW Primary Accent, was #4A3726)
+    "ACCENT_SUCCESS": "#4CAF50",         # Vibrant Green (NEW Success Accent, was DarkOliveGreen)
+    "BUTTON_TEXT": "#FFFFFF",             # White (text for buttons with dark brown background)
+    "BUTTON_BACKGROUND": "#5D4037",       # Rich Dark Brown (NEW, background for primary buttons)
+    "CANVAS_BACKGROUND_FILL": "#F5F5F5",   # Very Light Gray (was #EAEAEA, standard light gray)
+    "HEADER_TITLE": "#1C1C1C",             # Near Black (header title text on BACKGROUND_SECONDARY)
+    "HEADER_SUBTITLE": "#5D4037",        # Rich Dark Brown (header subtitle text on BACKGROUND_SECONDARY)
+    "SEPARATOR": "#BDBDBD",             # Medium Gray (was #BEBEBE)
+    "PROGRESSBAR_TROUGH": "#E0E0E0",       # Light Gray (progress bar trough)
+    "PROGRESSBAR_BAR": "#5D4037",          # Rich Dark Brown (progress bar fill)
+    "TOOLTIP_BACKGROUND": "#424242",       # Dark Gray (was Dark Brown, for better contrast with Dark Brown text if used elsewhere)
+    "TOOLTIP_TEXT": "#FFFFFF",             # White (tooltip text)
+    "PREVIEW_BG": "#F5F5F5",               # Very Light Gray (preview window background)
+    "PREVIEW_TEXT_ON_DARK": "#FFFFFF",     # White (text on any dark areas in preview - if they exist)
+    "PREVIEW_TEXT_ON_LIGHT": "#1C1C1C",    # Near Black (text on light areas in preview)
+    "PREVIEW_ACCENT": "#5D4037",         # Rich Dark Brown (accents in preview window)
+    "PREVIEW_CANVAS_PAGE_BG": "#FFFFFF",   # White (background for the PDF page rendering canvas)
+    # No "FOOTER_BUTTON_BACKGROUND" here, so footer buttons will use BACKGROUND_SECONDARY by default via .get()
 }
 
 # Variável global para armazenar o modo atual e as cores ativas
@@ -447,9 +449,9 @@ def apply_active_theme():
     style.configure("GuaraOutlineDangerCategory.TButton", foreground=danger_accent_fg, background=danger_accent_bg, bordercolor=danger_accent_border, borderwidth=2)
     style.map("GuaraOutlineDangerCategory.TButton", background=[('active', danger_accent_active_bg)], foreground=[('active', danger_accent_active_fg)])
 
-    style.configure('GuaraLinkButton.TButton', borderwidth=0, background=active_colors["BACKGROUND_SECONDARY"], foreground=active_colors["ACCENT_PRIMARY"], font=("Verdana", 10, "bold"))
+    style.configure('GuaraLinkButton.TButton', borderwidth=0, background=active_colors.get("FOOTER_BUTTON_BACKGROUND", active_colors["BACKGROUND_SECONDARY"]), foreground=active_colors["ACCENT_PRIMARY"], font=("Verdana", 10, "bold"))
     style.map('GuaraLinkButton.TButton', foreground=[('active', active_colors["TEXT_SECONDARY"])])
-    style.configure('GuaraExitButton.TButton', borderwidth=0, background=active_colors["BACKGROUND_SECONDARY"], foreground=active_colors["TEXT_SECONDARY"], font=("Verdana", 10, "bold"))
+    style.configure('GuaraExitButton.TButton', borderwidth=0, background=active_colors.get("FOOTER_BUTTON_BACKGROUND", active_colors["BACKGROUND_SECONDARY"]), foreground=active_colors["TEXT_SECONDARY"], font=("Verdana", 10, "bold"))
     style.map('GuaraExitButton.TButton', foreground=[('active', active_colors["ACCENT_PRIMARY"])])
 
     style.configure("GuaraLogo.TLabel", background=active_colors["BACKGROUND_SECONDARY"])
@@ -468,10 +470,26 @@ def apply_active_theme():
     style.configure('PreviewInfo.TLabelframe', background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_ACCENT"], bordercolor=active_colors["PREVIEW_ACCENT"], relief=tk.SOLID, borderwidth=1)
     style.configure('PreviewInfo.TLabelframe.Label', background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_ACCENT"])
 
-    style.configure("round-info.TScrollbar",
-            troughcolor=active_colors["PREVIEW_BG"],
-            background=active_colors["PREVIEW_ACCENT"],
-            arrowcolor=active_colors["TEXT_ON_ACCENT"] if current_theme_mode == "night" else active_colors["TEXT_PRIMARY"]
+    # Determine arrow color based on theme mode for better contrast on accent
+    arrow_color_on_accent = active_colors.get("TEXT_ON_ACCENT", active_colors["TEXT_PRIMARY"])
+    if current_theme_mode == "night" and "TEXT_ON_ACCENT" in active_colors: # Ensure TEXT_ON_ACCENT is light for dark accents
+        arrow_color_on_accent = active_colors["TEXT_ON_ACCENT"]
+    elif current_theme_mode == "day" and "TEXT_ON_ACCENT" in active_colors: # Ensure TEXT_ON_ACCENT contrasts with light accents
+         arrow_color_on_accent = active_colors["TEXT_ON_ACCENT"] # This might need adjustment if light accent is too light for white text
+    else: # Fallback
+        arrow_color_on_accent = active_colors["TEXT_PRIMARY"]
+
+    style.configure("Vertical.TScrollbar",
+        troughcolor=active_colors.get("BACKGROUND_SECONDARY", "#F0F0F0"), # Use a panel background color
+        background=active_colors.get("ACCENT_PRIMARY", "#CCCCCC"),     # Thumb color - using ACCENT_PRIMARY
+        arrowcolor=arrow_color_on_accent,
+        bordercolor=active_colors.get("ACCENT_PRIMARY", "#CCCCCC")    # Border for the scrollbar itself
+    )
+    style.configure("Horizontal.TScrollbar",
+        troughcolor=active_colors.get("BACKGROUND_SECONDARY", "#F0F0F0"),
+        background=active_colors.get("ACCENT_PRIMARY", "#CCCCCC"),   # Thumb color
+        arrowcolor=arrow_color_on_accent,
+        bordercolor=active_colors.get("ACCENT_PRIMARY", "#CCCCCC")
     )
     style.configure("Preview.TEntry",
                     fieldbackground=active_colors["BACKGROUND_SECONDARY"],
@@ -614,7 +632,7 @@ def setup_scrollable_canvas_in_frame(parent_frame, label_text="Prévia PDF"):
     # Fundo do canvas: Luz Pura da Lua (#ffffff) para visibilidade do PDF
     canvas = tk.Canvas(canvas_container, bg=active_colors["PREVIEW_CANVAS_PAGE_BG"], highlightthickness=0)
     # Scrollbar: Terracota do Cerrado para a cor do polegar
-    scrollbar = ttkb.Scrollbar(canvas_container, orient="vertical", command=canvas.yview, style="round-info.TScrollbar")
+    scrollbar = ttkb.Scrollbar(canvas_container, orient="vertical", command=canvas.yview)
     # Configura o estilo da scrollbar diretamente
     # style.configure("round-info", troughcolor=COLOR_NIGHT_SKY, background=COLOR_TERRACOTTA) # Moved to apply_active_theme
 
@@ -2183,7 +2201,7 @@ def show_help():
                              fg=active_colors["TEXT_PRIMARY"],
                              insertbackground=active_colors["TEXT_PRIMARY"])
 
-    scrollbar_help = ttkb.Scrollbar(options_frame, orient="vertical", command=help_text_area.yview, style="round-info.TScrollbar") # Style updated by apply_active_theme
+    scrollbar_help = ttkb.Scrollbar(options_frame, orient="vertical", command=help_text_area.yview) # Style updated by apply_active_theme
     help_text_area['yscrollcommand'] = scrollbar_help.set
 
     scrollbar_help.pack(side="right", fill="y", padx=(0,5), pady=5)
@@ -2509,17 +2527,17 @@ footer_divider.pack(fill="x", pady=(5,2))
 footer_button_frame = ttkb.Frame(footer_frame, style='GuaraFrameLight.TFrame')
 footer_button_frame.pack(pady=2, fill='x') # Fill x to allow packing left and right
 
-help_btn = ttkb.Button(footer_button_frame, text=texts["help"], command=show_help, width=15, style='GuaraLinkButton.TButton')
-help_btn.pack(side="left", padx=(20, 10)) # Add some padding
+help_btn = ttkb.Button(footer_button_frame, text=texts["help"], command=show_help, width=10, style='GuaraLinkButton.TButton')
+help_btn.pack(side="left", padx=(10, 5)) # Add some padding
 create_tooltip(help_btn, texts["tooltip_help"])
 
 initial_toggle_text = "Modo Diurno" if current_theme_mode == "night" else "Modo Noturno"
-theme_toggle_button = ttkb.Button(footer_button_frame, text=initial_toggle_text, command=toggle_theme, width=15, style='GuaraLinkButton.TButton')
-theme_toggle_button.pack(side="left", padx=10)
+theme_toggle_button = ttkb.Button(footer_button_frame, text=initial_toggle_text, command=toggle_theme, width=14, style='GuaraLinkButton.TButton')
+theme_toggle_button.pack(side="left", padx=5)
 create_tooltip(theme_toggle_button, "Alternar entre modo claro e escuro")
 
-exit_btn = ttkb.Button(footer_button_frame, text=texts["exit"], command=root.quit, width=15, style='GuaraExitButton.TButton')
-exit_btn.pack(side="right", padx=(10, 20)) # Pack to the right
+exit_btn = ttkb.Button(footer_button_frame, text=texts["exit"], command=root.quit, width=8, style='GuaraExitButton.TButton')
+exit_btn.pack(side="right", padx=(5, 10)) # Pack to the right
 create_tooltip(exit_btn, texts["tooltip_exit"])
 
 footer_text_frame = ttkb.Frame(footer_frame, style='GuaraFrameLight.TFrame')
