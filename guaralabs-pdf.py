@@ -132,53 +132,55 @@ COLOR_LIGHT_GRAY_BG = '#F0F0F0' # Um cinza bem leve para fundos que precisam ser
 
 # --- Paletas de Cores para Modo Dia/Noite ---
 NIGHT_MODE_COLORS = {
-    "BACKGROUND_PRIMARY": '#1A1A1A',
-    "BACKGROUND_SECONDARY": '#252525',
-    "TEXT_PRIMARY": COLOR_MOON_LIGHT,
-    "TEXT_SECONDARY": '#CCCCCC', # Usado para texto em fundo claro (COLOR_MOON_LIGHT)
-    "TEXT_ON_ACCENT": COLOR_MOON_LIGHT, # Texto em cima de botões com cor de acccent
-    "ACCENT_PRIMARY": COLOR_TERRACOTTA,
-    "ACCENT_SUCCESS": COLOR_ACCENT_GREEN,
-    "BUTTON_TEXT": COLOR_MOON_LIGHT, # Texto em botões com fundo claro
-    "BUTTON_BACKGROUND": COLOR_MOON_LIGHT, # Fundo de botões como os de categoria
-    "CANVAS_BACKGROUND_FILL": '#1A1A1A', # Cor de preenchimento do canvas_background
-    "HEADER_TITLE": COLOR_MOON_LIGHT, # Cor do título principal no header
-    "HEADER_SUBTITLE": COLOR_TERRACOTTA, # Cor do subtítulo no header
-    "SEPARATOR": COLOR_TERRACOTTA,
-    "PROGRESSBAR_TROUGH": COLOR_NIGHT_SKY,
-    "PROGRESSBAR_BAR": COLOR_TERRACOTTA,
-    "TOOLTIP_BACKGROUND": COLOR_NIGHT_SKY,
-    "TOOLTIP_TEXT": COLOR_MOON_LIGHT,
-    "PREVIEW_BG": COLOR_NIGHT_SKY, # Fundo da janela de prévia
-    "PREVIEW_TEXT_ON_DARK": COLOR_MOON_LIGHT, # Texto em cima de fundo escuro na prévia
-    "PREVIEW_TEXT_ON_LIGHT": COLOR_NIGHT_SKY, # Texto em cima de fundo claro na prévia (ex: canvas de página)
-    "PREVIEW_ACCENT": COLOR_TERRACOTTA, # Cor de destaque na prévia
-    "PREVIEW_CANVAS_PAGE_BG": COLOR_MOON_LIGHT # Fundo do canvas que mostra a página PDF
+    "BACKGROUND_PRIMARY": "#000000",       # Black
+    "BACKGROUND_SECONDARY": "#2A2A2A",     # Dark Gray (for panels, headers)
+    "TEXT_PRIMARY": "#FFFFFF",             # White (for text on primary background)
+    "TEXT_SECONDARY": "#E0E0E0",         # Light Gray (for text on secondary background, or less emphasized text)
+    "TEXT_ON_ACCENT": "#FFFFFF",           # White (for text on accent-colored elements)
+    "ACCENT_PRIMARY": "#A0522D",         # Light Brown (primary accent)
+    "ACCENT_SUCCESS": "#8FBC8F",         # DarkSeaGreen (success accent)
+    "BUTTON_TEXT": "#FFFFFF",             # White (text for default buttons on dark backgrounds)
+    "BUTTON_BACKGROUND": "#424242",       # Medium-Dark Gray (default background for some buttons if not using ACCENT_PRIMARY)
+    "CANVAS_BACKGROUND_FILL": "#000000",   # Black (main app background canvas)
+    "HEADER_TITLE": "#FFFFFF",             # White (header title text on BACKGROUND_SECONDARY)
+    "HEADER_SUBTITLE": "#A0522D",        # Light Brown (header subtitle text on BACKGROUND_SECONDARY)
+    "SEPARATOR": "#5C5C5C",             # Medium-Dark Gray (for dividers)
+    "PROGRESSBAR_TROUGH": "#333333",       # Dark Gray (progress bar trough)
+    "PROGRESSBAR_BAR": "#A0522D",          # Light Brown (progress bar fill)
+    "TOOLTIP_BACKGROUND": "#1E1E1E",       # Very Dark Gray (tooltip background)
+    "TOOLTIP_TEXT": "#E0E0E0",             # Light Gray (tooltip text)
+    "PREVIEW_BG": "#1E1E1E",               # Very Dark Gray (preview window background)
+    "PREVIEW_TEXT_ON_DARK": "#E0E0E0",     # Light Gray (text on dark areas in preview)
+    "PREVIEW_TEXT_ON_LIGHT": "#000000",    # Black (text on light areas in preview, e.g., PDF page canvas)
+    "PREVIEW_ACCENT": "#A0522D",         # Light Brown (accents in preview window)
+    "PREVIEW_CANVAS_PAGE_BG": "#FFFFFF",   # White (background for the PDF page rendering canvas)
+    "FOOTER_BUTTON_BACKGROUND": "#3C3C3C"  # Distinct background for footer buttons (already added)
 }
 
 DAY_MODE_COLORS = {
-    "BACKGROUND_PRIMARY": '#FAFAFA',    # Cinza claro
-    "BACKGROUND_SECONDARY": '#FFFFFF',   # Branco
-    "TEXT_PRIMARY": '#333333',          # Cinza escuro
-    "TEXT_SECONDARY": '#555555',        # Cinza médio (para texto em fundo claro secundário)
-    "TEXT_ON_ACCENT": '#FFFFFF',        # Branco para texto em botões de acento
-    "ACCENT_PRIMARY": '#007BFF',        # Azul Padrão
-    "ACCENT_SUCCESS": '#28A745',        # Verde Padrão
-    "BUTTON_TEXT": '#FFFFFF',           # Texto branco em botões de acento
-    "BUTTON_BACKGROUND": '#007BFF',     # Fundo azul para botões primários
-    "CANVAS_BACKGROUND_FILL": '#FAFAFA', # Um cinza um pouco mais escuro para o fundo geral
-    "HEADER_TITLE": '#333333',          # Cor do título principal no header
-    "HEADER_SUBTITLE": '#0056b3',       # Azul mais escuro para subtítulo
-    "SEPARATOR": '#007BFF',
-    "PROGRESSBAR_TROUGH": '#E9ECEF',    # Cinza bem claro para trilho da barra
-    "PROGRESSBAR_BAR": '#007BFF',       # Azul para a barra
-    "TOOLTIP_BACKGROUND": '#333333',    # Fundo escuro para tooltip
-    "TOOLTIP_TEXT": '#FFFFFF',          # Texto claro para tooltip
-    "PREVIEW_BG": '#EAEAEA',           # Fundo da janela de prévia
-    "PREVIEW_TEXT_ON_DARK": '#333333', # Texto em cima de fundo escuro na prévia (se houver)
-    "PREVIEW_TEXT_ON_LIGHT": '#333333',# Texto em cima de fundo claro na prévia
-    "PREVIEW_ACCENT": '#007BFF',       # Cor de destaque na prévia
-    "PREVIEW_CANVAS_PAGE_BG": '#FFFFFF' # Fundo do canvas que mostra a página PDF
+    "BACKGROUND_PRIMARY": "#FFFFFF",       # White
+    "BACKGROUND_SECONDARY": "#F5F5DC",     # Beige (light brown/off-white secondary background)
+    "TEXT_PRIMARY": "#000000",             # Black (main text color)
+    "TEXT_SECONDARY": "#4A3726",         # Dark Brown (secondary or less emphasized text)
+    "TEXT_ON_ACCENT": "#FFFFFF",           # White (text on dark brown accent elements)
+    "ACCENT_PRIMARY": "#4A3726",         # Dark Brown (primary accent color)
+    "ACCENT_SUCCESS": "#556B2F",         # DarkOliveGreen (success accent, fits earthy tones)
+    "BUTTON_TEXT": "#FFFFFF",             # White (text for buttons with dark brown background)
+    "BUTTON_BACKGROUND": "#4A3726",       # Dark Brown (background for primary buttons)
+    "CANVAS_BACKGROUND_FILL": "#EAEAEA",   # Light Gray (main canvas background for slight differentiation)
+    "HEADER_TITLE": "#000000",             # Black (header title text on BACKGROUND_SECONDARY)
+    "HEADER_SUBTITLE": "#4A3726",        # Dark Brown (header subtitle text on BACKGROUND_SECONDARY)
+    "SEPARATOR": "#BEBEBE",             # Gray (for dividers)
+    "PROGRESSBAR_TROUGH": "#E0E0E0",       # Light Gray (progress bar trough)
+    "PROGRESSBAR_BAR": "#4A3726",          # Dark Brown (progress bar fill)
+    "TOOLTIP_BACKGROUND": "#4A3726",       # Dark Brown (tooltip background)
+    "TOOLTIP_TEXT": "#FFFFFF",             # White (tooltip text)
+    "PREVIEW_BG": "#F0F0F0",               # Light Gray (preview window background)
+    "PREVIEW_TEXT_ON_DARK": "#FFFFFF",     # White (text on any dark areas in preview - if they exist)
+    "PREVIEW_TEXT_ON_LIGHT": "#000000",    # Black (text on light areas in preview)
+    "PREVIEW_ACCENT": "#4A3726",         # Dark Brown (accents in preview window)
+    "PREVIEW_CANVAS_PAGE_BG": "#FFFFFF",   # White (background for the PDF page rendering canvas)
+    # No "FOOTER_BUTTON_BACKGROUND" here, so footer buttons will use BACKGROUND_SECONDARY by default via .get()
 }
 
 # Variável global para armazenar o modo atual e as cores ativas
@@ -447,9 +449,9 @@ def apply_active_theme():
     style.configure("GuaraOutlineDangerCategory.TButton", foreground=danger_accent_fg, background=danger_accent_bg, bordercolor=danger_accent_border, borderwidth=2)
     style.map("GuaraOutlineDangerCategory.TButton", background=[('active', danger_accent_active_bg)], foreground=[('active', danger_accent_active_fg)])
 
-    style.configure('GuaraLinkButton.TButton', borderwidth=0, background=active_colors["BACKGROUND_SECONDARY"], foreground=active_colors["ACCENT_PRIMARY"], font=("Verdana", 10, "bold"))
+    style.configure('GuaraLinkButton.TButton', borderwidth=0, background=active_colors.get("FOOTER_BUTTON_BACKGROUND", active_colors["BACKGROUND_SECONDARY"]), foreground=active_colors["ACCENT_PRIMARY"], font=("Verdana", 10, "bold"))
     style.map('GuaraLinkButton.TButton', foreground=[('active', active_colors["TEXT_SECONDARY"])])
-    style.configure('GuaraExitButton.TButton', borderwidth=0, background=active_colors["BACKGROUND_SECONDARY"], foreground=active_colors["TEXT_SECONDARY"], font=("Verdana", 10, "bold"))
+    style.configure('GuaraExitButton.TButton', borderwidth=0, background=active_colors.get("FOOTER_BUTTON_BACKGROUND", active_colors["BACKGROUND_SECONDARY"]), foreground=active_colors["TEXT_SECONDARY"], font=("Verdana", 10, "bold"))
     style.map('GuaraExitButton.TButton', foreground=[('active', active_colors["ACCENT_PRIMARY"])])
 
     style.configure("GuaraLogo.TLabel", background=active_colors["BACKGROUND_SECONDARY"])
