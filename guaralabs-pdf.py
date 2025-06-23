@@ -133,16 +133,16 @@ COLOR_LIGHT_GRAY_BG = '#F0F0F0' # Um cinza bem leve para fundos que precisam ser
 # --- Paletas de Cores para Modo Dia/Noite ---
 NIGHT_MODE_COLORS = {
     "BACKGROUND_PRIMARY": '#1A1A1A',
-    "BACKGROUND_SECONDARY": COLOR_MOON_LIGHT,
+    "BACKGROUND_SECONDARY": '#252525',
     "TEXT_PRIMARY": COLOR_MOON_LIGHT,
-    "TEXT_SECONDARY": COLOR_DARK_EARTH, # Usado para texto em fundo claro (COLOR_MOON_LIGHT)
+    "TEXT_SECONDARY": '#CCCCCC', # Usado para texto em fundo claro (COLOR_MOON_LIGHT)
     "TEXT_ON_ACCENT": COLOR_MOON_LIGHT, # Texto em cima de botões com cor de acccent
     "ACCENT_PRIMARY": COLOR_TERRACOTTA,
     "ACCENT_SUCCESS": COLOR_ACCENT_GREEN,
-    "BUTTON_TEXT": COLOR_NIGHT_SKY, # Texto em botões com fundo claro
+    "BUTTON_TEXT": COLOR_MOON_LIGHT, # Texto em botões com fundo claro
     "BUTTON_BACKGROUND": COLOR_MOON_LIGHT, # Fundo de botões como os de categoria
     "CANVAS_BACKGROUND_FILL": '#1A1A1A', # Cor de preenchimento do canvas_background
-    "HEADER_TITLE": COLOR_DARK_EARTH, # Cor do título principal no header
+    "HEADER_TITLE": COLOR_MOON_LIGHT, # Cor do título principal no header
     "HEADER_SUBTITLE": COLOR_TERRACOTTA, # Cor do subtítulo no header
     "SEPARATOR": COLOR_TERRACOTTA,
     "PROGRESSBAR_TROUGH": COLOR_NIGHT_SKY,
