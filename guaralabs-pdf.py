@@ -137,48 +137,48 @@ NIGHT_MODE_COLORS = {
     "TEXT_PRIMARY": "#FFFFFF",             # White (for text on primary background)
     "TEXT_SECONDARY": "#E0E0E0",         # Light Gray (for text on secondary background, or less emphasized text)
     "TEXT_ON_ACCENT": "#FFFFFF",           # White (for text on accent-colored elements)
-    "ACCENT_PRIMARY": "#A0522D",         # Light Brown (primary accent)
-    "ACCENT_SUCCESS": "#8FBC8F",         # DarkSeaGreen (success accent)
+    "ACCENT_PRIMARY": "#E59400",         # Vibrant Amber/Orange (NEW Primary Accent)
+    "ACCENT_SUCCESS": "#2E8B57",         # SeaGreen (NEW Success Accent - good contrast with amber and dark bg)
     "BUTTON_TEXT": "#FFFFFF",             # White (text for default buttons on dark backgrounds)
     "BUTTON_BACKGROUND": "#424242",       # Medium-Dark Gray (default background for some buttons if not using ACCENT_PRIMARY)
     "CANVAS_BACKGROUND_FILL": "#000000",   # Black (main app background canvas)
     "HEADER_TITLE": "#FFFFFF",             # White (header title text on BACKGROUND_SECONDARY)
-    "HEADER_SUBTITLE": "#A0522D",        # Light Brown (header subtitle text on BACKGROUND_SECONDARY)
+    "HEADER_SUBTITLE": "#E59400",        # Vibrant Amber/Orange (NEW - using ACCENT_PRIMARY for subtitle)
     "SEPARATOR": "#5C5C5C",             # Medium-Dark Gray (for dividers)
     "PROGRESSBAR_TROUGH": "#333333",       # Dark Gray (progress bar trough)
-    "PROGRESSBAR_BAR": "#A0522D",          # Light Brown (progress bar fill)
+    "PROGRESSBAR_BAR": "#E59400",          # Vibrant Amber/Orange (NEW - using ACCENT_PRIMARY for progress bar)
     "TOOLTIP_BACKGROUND": "#1E1E1E",       # Very Dark Gray (tooltip background)
     "TOOLTIP_TEXT": "#E0E0E0",             # Light Gray (tooltip text)
     "PREVIEW_BG": "#1E1E1E",               # Very Dark Gray (preview window background)
     "PREVIEW_TEXT_ON_DARK": "#E0E0E0",     # Light Gray (text on dark areas in preview)
     "PREVIEW_TEXT_ON_LIGHT": "#000000",    # Black (text on light areas in preview, e.g., PDF page canvas)
-    "PREVIEW_ACCENT": "#A0522D",         # Light Brown (accents in preview window)
+    "PREVIEW_ACCENT": "#E59400",         # Vibrant Amber/Orange (NEW - using ACCENT_PRIMARY for preview accents)
     "PREVIEW_CANVAS_PAGE_BG": "#FFFFFF",   # White (background for the PDF page rendering canvas)
-    "FOOTER_BUTTON_BACKGROUND": "#3C3C3C"  # Distinct background for footer buttons (already added)
+    "FOOTER_BUTTON_BACKGROUND": "#3C3C3C"  # Distinct background for footer buttons
 }
 
 DAY_MODE_COLORS = {
     "BACKGROUND_PRIMARY": "#FFFFFF",       # White
-    "BACKGROUND_SECONDARY": "#F5F5DC",     # Beige (light brown/off-white secondary background)
-    "TEXT_PRIMARY": "#000000",             # Black (main text color)
-    "TEXT_SECONDARY": "#4A3726",         # Dark Brown (secondary or less emphasized text)
+    "BACKGROUND_SECONDARY": "#F0EDE5",     # Off-white/Very Light Grayish Beige (was Beige #F5F5DC, now slightly more neutral gray/brownish)
+    "TEXT_PRIMARY": "#1C1C1C",             # Near Black (was #000000, slightly softer)
+    "TEXT_SECONDARY": "#5D4037",         # Rich Dark Brown (was #4A3726)
     "TEXT_ON_ACCENT": "#FFFFFF",           # White (text on dark brown accent elements)
-    "ACCENT_PRIMARY": "#4A3726",         # Dark Brown (primary accent color)
-    "ACCENT_SUCCESS": "#556B2F",         # DarkOliveGreen (success accent, fits earthy tones)
+    "ACCENT_PRIMARY": "#5D4037",         # Rich Dark Brown (NEW Primary Accent, was #4A3726)
+    "ACCENT_SUCCESS": "#4CAF50",         # Vibrant Green (NEW Success Accent, was DarkOliveGreen)
     "BUTTON_TEXT": "#FFFFFF",             # White (text for buttons with dark brown background)
-    "BUTTON_BACKGROUND": "#4A3726",       # Dark Brown (background for primary buttons)
-    "CANVAS_BACKGROUND_FILL": "#EAEAEA",   # Light Gray (main canvas background for slight differentiation)
-    "HEADER_TITLE": "#000000",             # Black (header title text on BACKGROUND_SECONDARY)
-    "HEADER_SUBTITLE": "#4A3726",        # Dark Brown (header subtitle text on BACKGROUND_SECONDARY)
-    "SEPARATOR": "#BEBEBE",             # Gray (for dividers)
+    "BUTTON_BACKGROUND": "#5D4037",       # Rich Dark Brown (NEW, background for primary buttons)
+    "CANVAS_BACKGROUND_FILL": "#F5F5F5",   # Very Light Gray (was #EAEAEA, standard light gray)
+    "HEADER_TITLE": "#1C1C1C",             # Near Black (header title text on BACKGROUND_SECONDARY)
+    "HEADER_SUBTITLE": "#5D4037",        # Rich Dark Brown (header subtitle text on BACKGROUND_SECONDARY)
+    "SEPARATOR": "#BDBDBD",             # Medium Gray (was #BEBEBE)
     "PROGRESSBAR_TROUGH": "#E0E0E0",       # Light Gray (progress bar trough)
-    "PROGRESSBAR_BAR": "#4A3726",          # Dark Brown (progress bar fill)
-    "TOOLTIP_BACKGROUND": "#4A3726",       # Dark Brown (tooltip background)
+    "PROGRESSBAR_BAR": "#5D4037",          # Rich Dark Brown (progress bar fill)
+    "TOOLTIP_BACKGROUND": "#424242",       # Dark Gray (was Dark Brown, for better contrast with Dark Brown text if used elsewhere)
     "TOOLTIP_TEXT": "#FFFFFF",             # White (tooltip text)
-    "PREVIEW_BG": "#F0F0F0",               # Light Gray (preview window background)
+    "PREVIEW_BG": "#F5F5F5",               # Very Light Gray (preview window background)
     "PREVIEW_TEXT_ON_DARK": "#FFFFFF",     # White (text on any dark areas in preview - if they exist)
-    "PREVIEW_TEXT_ON_LIGHT": "#000000",    # Black (text on light areas in preview)
-    "PREVIEW_ACCENT": "#4A3726",         # Dark Brown (accents in preview window)
+    "PREVIEW_TEXT_ON_LIGHT": "#1C1C1C",    # Near Black (text on light areas in preview)
+    "PREVIEW_ACCENT": "#5D4037",         # Rich Dark Brown (accents in preview window)
     "PREVIEW_CANVAS_PAGE_BG": "#FFFFFF",   # White (background for the PDF page rendering canvas)
     # No "FOOTER_BUTTON_BACKGROUND" here, so footer buttons will use BACKGROUND_SECONDARY by default via .get()
 }
@@ -470,10 +470,26 @@ def apply_active_theme():
     style.configure('PreviewInfo.TLabelframe', background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_ACCENT"], bordercolor=active_colors["PREVIEW_ACCENT"], relief=tk.SOLID, borderwidth=1)
     style.configure('PreviewInfo.TLabelframe.Label', background=active_colors["PREVIEW_BG"], foreground=active_colors["PREVIEW_ACCENT"])
 
-    style.configure("round-info.TScrollbar",
-            troughcolor=active_colors["PREVIEW_BG"],
-            background=active_colors["PREVIEW_ACCENT"],
-            arrowcolor=active_colors["TEXT_ON_ACCENT"] if current_theme_mode == "night" else active_colors["TEXT_PRIMARY"]
+    # Determine arrow color based on theme mode for better contrast on accent
+    arrow_color_on_accent = active_colors.get("TEXT_ON_ACCENT", active_colors["TEXT_PRIMARY"])
+    if current_theme_mode == "night" and "TEXT_ON_ACCENT" in active_colors: # Ensure TEXT_ON_ACCENT is light for dark accents
+        arrow_color_on_accent = active_colors["TEXT_ON_ACCENT"]
+    elif current_theme_mode == "day" and "TEXT_ON_ACCENT" in active_colors: # Ensure TEXT_ON_ACCENT contrasts with light accents
+         arrow_color_on_accent = active_colors["TEXT_ON_ACCENT"] # This might need adjustment if light accent is too light for white text
+    else: # Fallback
+        arrow_color_on_accent = active_colors["TEXT_PRIMARY"]
+
+    style.configure("Vertical.TScrollbar",
+        troughcolor=active_colors.get("BACKGROUND_SECONDARY", "#F0F0F0"), # Use a panel background color
+        background=active_colors.get("ACCENT_PRIMARY", "#CCCCCC"),     # Thumb color - using ACCENT_PRIMARY
+        arrowcolor=arrow_color_on_accent,
+        bordercolor=active_colors.get("ACCENT_PRIMARY", "#CCCCCC")    # Border for the scrollbar itself
+    )
+    style.configure("Horizontal.TScrollbar",
+        troughcolor=active_colors.get("BACKGROUND_SECONDARY", "#F0F0F0"),
+        background=active_colors.get("ACCENT_PRIMARY", "#CCCCCC"),   # Thumb color
+        arrowcolor=arrow_color_on_accent,
+        bordercolor=active_colors.get("ACCENT_PRIMARY", "#CCCCCC")
     )
     style.configure("Preview.TEntry",
                     fieldbackground=active_colors["BACKGROUND_SECONDARY"],
@@ -616,7 +632,7 @@ def setup_scrollable_canvas_in_frame(parent_frame, label_text="Prévia PDF"):
     # Fundo do canvas: Luz Pura da Lua (#ffffff) para visibilidade do PDF
     canvas = tk.Canvas(canvas_container, bg=active_colors["PREVIEW_CANVAS_PAGE_BG"], highlightthickness=0)
     # Scrollbar: Terracota do Cerrado para a cor do polegar
-    scrollbar = ttkb.Scrollbar(canvas_container, orient="vertical", command=canvas.yview, style="round-info.TScrollbar")
+    scrollbar = ttkb.Scrollbar(canvas_container, orient="vertical", command=canvas.yview)
     # Configura o estilo da scrollbar diretamente
     # style.configure("round-info", troughcolor=COLOR_NIGHT_SKY, background=COLOR_TERRACOTTA) # Moved to apply_active_theme
 
@@ -2185,7 +2201,7 @@ def show_help():
                              fg=active_colors["TEXT_PRIMARY"],
                              insertbackground=active_colors["TEXT_PRIMARY"])
 
-    scrollbar_help = ttkb.Scrollbar(options_frame, orient="vertical", command=help_text_area.yview, style="round-info.TScrollbar") # Style updated by apply_active_theme
+    scrollbar_help = ttkb.Scrollbar(options_frame, orient="vertical", command=help_text_area.yview) # Style updated by apply_active_theme
     help_text_area['yscrollcommand'] = scrollbar_help.set
 
     scrollbar_help.pack(side="right", fill="y", padx=(0,5), pady=5)
@@ -2511,17 +2527,17 @@ footer_divider.pack(fill="x", pady=(5,2))
 footer_button_frame = ttkb.Frame(footer_frame, style='GuaraFrameLight.TFrame')
 footer_button_frame.pack(pady=2, fill='x') # Fill x to allow packing left and right
 
-help_btn = ttkb.Button(footer_button_frame, text=texts["help"], command=show_help, width=15, style='GuaraLinkButton.TButton')
-help_btn.pack(side="left", padx=(20, 10)) # Add some padding
+help_btn = ttkb.Button(footer_button_frame, text=texts["help"], command=show_help, width=10, style='GuaraLinkButton.TButton')
+help_btn.pack(side="left", padx=(10, 5)) # Add some padding
 create_tooltip(help_btn, texts["tooltip_help"])
 
 initial_toggle_text = "Modo Diurno" if current_theme_mode == "night" else "Modo Noturno"
-theme_toggle_button = ttkb.Button(footer_button_frame, text=initial_toggle_text, command=toggle_theme, width=15, style='GuaraLinkButton.TButton')
-theme_toggle_button.pack(side="left", padx=10)
+theme_toggle_button = ttkb.Button(footer_button_frame, text=initial_toggle_text, command=toggle_theme, width=14, style='GuaraLinkButton.TButton')
+theme_toggle_button.pack(side="left", padx=5)
 create_tooltip(theme_toggle_button, "Alternar entre modo claro e escuro")
 
-exit_btn = ttkb.Button(footer_button_frame, text=texts["exit"], command=root.quit, width=15, style='GuaraExitButton.TButton')
-exit_btn.pack(side="right", padx=(10, 20)) # Pack to the right
+exit_btn = ttkb.Button(footer_button_frame, text=texts["exit"], command=root.quit, width=8, style='GuaraExitButton.TButton')
+exit_btn.pack(side="right", padx=(5, 10)) # Pack to the right
 create_tooltip(exit_btn, texts["tooltip_exit"])
 
 footer_text_frame = ttkb.Frame(footer_frame, style='GuaraFrameLight.TFrame')
